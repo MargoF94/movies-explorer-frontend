@@ -1,0 +1,138 @@
+.promo {
+  background-color: #073042;
+  justify-content: center;
+  padding: 75px calc((100% - 1280px) / 2 + 70px);
+}
+
+.promo__wrapper {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
+  max-width: 1280px;
+  gap: 190px;
+}
+
+.promo__title {
+  margin: 0 0 37px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  color: #fff;
+}
+
+.promo__subtitle {
+  padding: 0;
+  max-width: 310px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: #FFFFFF;
+  mix-blend-mode: normal;
+  opacity: 0.5;
+}
+
+.promo__landing-logo {
+  width: 310px;
+  height: 304px;
+  object-fit: cover;
+}
+
+.promo__learn-more-button {
+  margin-top: 84px;
+  width: 129px;
+  height: 36px;
+  background-color: transparent;
+  opacity: 1;
+  border: 1px solid #FFFFFF;
+  border-radius: 3px;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;  
+  color: #FFFFFF;
+  transition: opacity 0.5s linear;
+}
+
+.promo__learn-more-button:hover {
+  cursor: pointer;
+  opacity: .7;
+}
+
+@media screen and (max-width: 1279px) {
+  .promo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #073042;
+    justify-content: center;
+    padding: 140px 50px 76px;
+  }
+
+  .promo__wrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 0;
+  }
+
+  .promo__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .promo__title {
+    margin: 50px auto 0;
+    padding: 0;
+    text-align: center;
+    font-size: 40px;
+    line-height: 50px;
+  }
+
+  .promo__subtitle {
+    margin: 22px auto 0;
+    text-align: center;
+    min-width: 0;
+    max-width: 260px;
+  }
+
+  .promo__learn-more-button {
+    margin-top: 90px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .promo__landing-logo {
+    height: 210px;
+    width: 206px;
+  }
+
+  .promo {
+    padding: 70px 10px 30px;
+  }
+
+  .promo__title {
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.04em;
+    margin: 41px auto 0;
+  }
+
+  .promo__subtitle {
+    min-width: 260px;
+    width: 260px;
+  }
+
+  .promo__learn-more-button {
+    margin-top: 80px;
+  }
+}
