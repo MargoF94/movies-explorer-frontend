@@ -1,17 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
 import Header from '../Header/Header';
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import './Profile.css';
 
-function Profile() {
+function Profile({ onSubmit, onLogOut, isLoggedIn }) {
+
+  const currentUser = useContext(CurrentUserContext);
+  console.log(`Profile current user: ${currentUser}`);
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser]); 
+
+  function handleNameChange(e) {
+    setName(e.target.value);
+  }
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleSubmit (e) {
+    onSubmit(e);
+      e.preventDefault();
+      onSubmit(name, email)
+  }
+
   return (
     <div className="profile">
-      <Header isLoggedIn={true} />
+      <Header isLoggedIn={isLoggedIn} />
 
       <form className="profile__form">
 
         <h1 className="profile__title">
-          Привет, Маргарита!
+          {`Привет, ${currentUser.name}!`}
         </h1>
 
         <div className="profile__name-container">
@@ -24,7 +50,8 @@ function Profile() {
             className="profile__input"
             id="profile__form-name"
             type="text"
-            placeholder="Маргарита"
+            onChange={handleNameChange}
+            value={name || ""}
             required />
           <span
             id="profile__form-name-error"
@@ -41,7 +68,8 @@ function Profile() {
             className="profile__input"
             id="profile__form-email"
             type="email"
-            placeholder="pochta@yandex.ru"
+            onChange={handleEmailChange}
+            value={email || ""}
             required />
           <span
             id="profile__form-email-error"
@@ -50,12 +78,14 @@ function Profile() {
 
         <button
           className="profile_edit-button"
-          type="submit">
+          type="submit"
+          onClick={handleSubmit}>
           Редактировать
         </button>
         <button
           className="profile_logout-button"
-          type="submit">
+          type="submit"
+          onClick={onLogOut}>
           Выйти из аккаунта
         </button>
 

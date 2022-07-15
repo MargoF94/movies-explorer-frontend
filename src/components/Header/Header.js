@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import './Header.css';
 import logo from '../../images/logo.svg';
-import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 function Header({isLoggedIn}) {

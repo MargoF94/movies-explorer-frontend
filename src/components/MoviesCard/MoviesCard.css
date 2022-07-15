@@ -32,6 +32,9 @@
   font-size: 15px;
   line-height: 18px;
   color: #FFFFFF;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(100% - 50px);
 }
 
 .card__duration {

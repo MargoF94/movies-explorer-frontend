@@ -1,108 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
-import moviecard01 from '../../images/moviecard01.svg';
-import moviecard02 from '../../images/moviecard02.svg';
-import moviecard03 from '../../images/moviecard03.svg';
-import moviecard04 from '../../images/moviecard04.svg';
-import moviecard05 from '../../images/moviecard05.svg';
-import moviecard06 from '../../images/moviecard06.svg';
-import moviecard07 from '../../images/moviecard07.svg';
-import moviecard08 from '../../images/moviecard08.svg';
-import moviecard09 from '../../images/moviecard09.svg';
-import moviecard10 from '../../images/moviecard10.svg';
-import moviecard11 from '../../images/moviecard11.svg';
-import moviecard12 from '../../images/moviecard12.svg';
 
-function MoviesList() {
+function MoviesList({ movieSearchResult, savedMovies, handleSetLike, handleRemoveLike, isLoggedIn }) {
+  
+  const [moviesToRender, setMoviesToRender] = useState('');
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/movies') {
+      const searchResultLocalStorage = localStorage.getItem('searchResults');
+      if(searchResultLocalStorage.length === 0 || searchResultLocalStorage === null) {
+        setMoviesToRender([]);
+      } else {
+        setMoviesToRender(JSON.parse(localStorage.getItem('searchResults')))
+      }
+    } else if (location.pathname === '/saved-movies') {
+      if (savedMovies.length === 0 || savedMovies === null) {
+        setMoviesToRender([]);
+      } else {
+        setMoviesToRender(savedMovies);
+      }
+    }
+  }, []);
 
   return (
     <div className="movies-list">
       <div className="movies-list__container">
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard01}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={true} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard02}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={true} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard03}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={false} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard04}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={false} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard05}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={true} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard06}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={false} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard07}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={true} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard08}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={true} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard09}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={false} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard10}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={false} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard11}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={false} />
-
-        <MoviesCard
-          name="В погоне за Бенкси"
-          duration="27 минут"
-          image={moviecard12}
-          trailerLink="https://www.kinopoisk.ru/film/1390163/video/type/0/"
-          isSaved={false} />
+        {
+          moviesToRender.length > 0 &&
+          moviesToRender.map((movie) => {
+            return <MoviesCard
+              key={movie.movieId || movie._id}
+              movie={movie}
+              handleSetLike={handleSetLike}
+              handleRemoveLike={handleRemoveLike} />
+          })
+        }
       </div>
 
       <button 

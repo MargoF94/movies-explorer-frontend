@@ -1,5 +1,4 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React from 'react';
 import './Main.css';
 import Header from '../Header/Header';
 import Promo from '../Promo/Promo';
@@ -8,10 +7,10 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Footer from '../Footer/Footer';
 
-function Main() {
+function Main({ isLoggedIn }) {
   return (
     <>
-      <Header isLoggedIn={false} />
+      <Header isLoggedIn={isLoggedIn} />
       <Promo />
       <AboutProject />
       <Techs />

@@ -106,6 +106,7 @@
   .techs {
     padding: 68px 18px;
     max-width: 768px;
+    background-color: transparent;
   }
 
   .techs__title {

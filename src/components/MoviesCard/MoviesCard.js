@@ -1,41 +1,68 @@
-import React from "react";
+import React, { useContext } from "react";
 import './MoviesCard.css';
 import saved from '../../images/icon_saved.svg';
-import unsave from '../../images/unsave-icon.svg';
+import unsaved from '../../images/unsave-icon.svg';
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useLocation } from "react-router";
 
-function MoviesCard({ name, duration, image, trailerLink, isSaved, isSavedPage = false }) {
+function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
+
+  const currentUser = useContext(CurrentUserContext);
+  const isSaved = movie.owner === currentUser._id;
+  const route = useLocation().pathname;
+
+  const onLike = () => {
+    handleSetLike(movie);
+  };
+
+  const onDislike = () => {
+    handleRemoveLike(movie);
+  }
 
   const className = (
-    `card__button ${ (isSaved && !isSavedPage) && 'card__button-saved' } ${ isSavedPage && 'card__button-unsave' } ${!isSaved && 'card__button-nonsaved'}`
+    `card__button ${ (isSaved && route === '/movies') && 'card__button-saved' } ${ route === '/saved-movies' && 'card__button-unsave' } ${!isSaved && 'card__button-nonsaved'}`
   )
+  
+  const buttonSymbol = () => {
+    if (isSaved && route === '/movies') {
+      return (<img src={saved} alt="галочка" />);
+    } else if (route === '/saved-movies') {
+      return (<img src={unsaved} alt="крестик" />);
+    } else {
+      return ('Сохранить');
+    }
+  }
 
-  const buttonSymbol = (
-    isSavedPage ? <img src={unsave} alt="крестик" /> : <img src={saved} alt="галочка" />
-  )
+  const thumbnail = route === '/movies' ? 
+  `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}` :
+    movie.thumbnail;
 
-  const buttonText = (
-    isSaved ? buttonSymbol : 'Сохранить'
-  )
+  const transformDuration = (duration) => {
+    const hours = Math.floor(duration / 60);
+    const mins = duration - hours * 60;
+    return`${hours > 0 ? hours + 'ч ' : ''}${!mins === 0 ? mins + 'м' : ''}`;
+  }
 
   return (
     <div className="card">
       <div className="card__info">
-        <h3 className="card__title">{ name }</h3>
-        <span className="card__duration">{ duration }</span>
+        <h3 className="card__title">{ movie.nameRU }</h3>
+        <span className="card__duration">{ transformDuration(movie.duration) }</span>
       </div>
       <a
         className="card__image-link"
-        href={ trailerLink }
+        href={ movie.trailerLink }
         target="_blank"
         rel="noreferrer">
         <img
           className="card__image"
-          src={ image }
-          alt={ name } />
+          src={ thumbnail }
+          alt={ movie.nameRU } />
       </a>
       <button
-        className={ className }>
-        { buttonText }
+        className={ className }
+        onClick={isSaved ? onDislike : onLike}>
+        { buttonSymbol() }
       </button>
     </div>
   )

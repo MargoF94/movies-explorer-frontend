@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import './Login.css';
 import logo from '../../images/logo-big.svg';
 
-function Login() {
+function Login({ handleLogin }) {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  };
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  };
+
+  function onLogin(e) {
+    e.preventDefault();
+    console.log('Login: prevented default on submit!');
+    console.log(`Login: current email: ${email} and passord:${password}`);
+
+    handleLogin(email, password);
+  }
+
   return (
     <div className="login">
       <img
@@ -13,10 +33,11 @@ function Login() {
       <h2 className='login__title'>Рады видеть!</h2>
       <form 
         className='form login__form'
-        name='login'>
+        name='login'
+        onSubmit={onLogin}>
 
         <label
-          for="form__login-email"
+          htmlFor="form__login-email"
           className="login__label">
             E-mail
         </label>
@@ -25,6 +46,8 @@ function Login() {
           type="text"
           id="form__login-email"
           name="login-email"
+          onChange={handleEmailChange}
+          value={email || ''}
           required />
         <span
           id="form__login-email-error"
@@ -32,7 +55,7 @@ function Login() {
         </span>
 
         <label
-          for="form__login-password"
+          htmlFor="form__login-password"
           className="login__label">
             Пароль
         </label>
@@ -41,6 +64,8 @@ function Login() {
           type="password"
           id="form__login-password"
           name="password"
+          onChange={handlePasswordChange}
+          value={password || ''}
           required />
         <span
           id="form__profile-description-error"
@@ -54,7 +79,7 @@ function Login() {
         </button>
 
       </form>
-      <span className="login__text">Ещё не зарегистрированы?  <Link className="login__link" to="signup">Регистрация</Link></span>
+      <span className="login__text">Ещё не зарегистрированы?  <Link className="login__link" to="/signup">Регистрация</Link></span>
     </div>
   )
 }
