@@ -5,14 +5,15 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import './Movies.css';
 
-function Movies({ movies, movieSearchResult, searchWord, handleSetLike, handleRemoveLike, onSearch, isLoggedIn }) {
+function Movies({ movies, movieSearchResult, searchWord, handleSetLike, handleRemoveLike, onSearch, handleCheckboxToggle, isLoggedIn }) {
   
   return (
     <div className="movies">
       <Header isLoggedIn={isLoggedIn} />
       <SearchForm
         movies={movies}
-        onSearch={onSearch} />
+        onSearch={onSearch}
+        handleCheckboxToggle={handleCheckboxToggle} />
         <MoviesCardList
           movieSearchResult={movieSearchResult}
           handleSetLike={handleSetLike}

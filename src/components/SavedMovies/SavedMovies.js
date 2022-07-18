@@ -5,7 +5,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import './SavedMovies.css';
 
-function SavedMovies({ savedMovies, handleRemoveLike, onSearch, isLoggedIn }) {
+function SavedMovies({ savedMovies, handleRemoveLike, onSearch, handleCheckboxToggle, isLoggedIn }) {
   
   return (
     <div className="movies">
@@ -13,7 +13,8 @@ function SavedMovies({ savedMovies, handleRemoveLike, onSearch, isLoggedIn }) {
       <SearchForm
         savedMovies={savedMovies}
         movies={savedMovies}
-        onSearch={onSearch} />
+        onSearch={onSearch}
+        handleCheckboxToggle={handleCheckboxToggle} />
       <MoviesCardList
           savedMovies={savedMovies}
           onDislike={handleRemoveLike}

@@ -34,8 +34,8 @@ function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
   }
 
   const thumbnail = route === '/movies' ? 
-  `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}` :
-    movie.thumbnail;
+    `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}` :
+    `https://api.nomoreparties.co${movie.thumbnail}`;
 
   const transformDuration = (duration) => {
     const hours = Math.floor(duration / 60);

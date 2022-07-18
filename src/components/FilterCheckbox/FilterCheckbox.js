@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import './FilterCheckbox.css';
 
-function FilterCheckbox() {
+function FilterCheckbox({ handleCheckboxToggle }) {
 
-  const [isChecked, setIsChecked] = useState(true);
-
+  const [isChecked, setIsChecked] = useState();
+  
   const classNameCircle = (
     isChecked ? 
       'checkbox__circle_checked' : 
@@ -15,18 +15,14 @@ function FilterCheckbox() {
     isChecked ? '' : 'checkbox__new-check_unchecked'
   )
 
-  function handleClick() {
-    if (isChecked === true) {
-      setIsChecked(false)
-    } else {
-      setIsChecked(true)
-    }
+  function handleToggle() {
+    setIsChecked(!localStorage.getItem('filterState'))
   }
 
   return (
     <label className="checkbox">
       <input className="checkbox__input" type="checkbox" />
-      <span className={`checkbox__new-check ${classNameBG}`} onClick={handleClick}>
+      <span className={`checkbox__new-check ${classNameBG}`} onClick={handleCheckboxToggle}>
         <span className={`checkbox__circle ${classNameCircle}`} />
       </span>
       <span className="checkbox__description">Короткометражки</span>

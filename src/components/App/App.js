@@ -27,6 +27,7 @@ function App() {
   const [movies, setMovies] = useState([]); // Фильмы, полученные от Api
   const [savedMovies, setSavedMovies] = useState([]); // Фильмы, сохраненные пользователем
   const [movieSearchResult, setMovieSearchResult] = useState([]);
+  const [isShortMovie, setIsShortMovie] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // ЛОКАЛЬНОЕ ХРАНИЛИЩЕ
@@ -83,6 +84,7 @@ function App() {
         }
         localStorage.setItem('jwt', data.jwt);
         localStorage.setItem('searchResults', []);
+        localStorage.setItem('filterState', false);
         return data._id;
       })
       .then((id) => {
@@ -137,6 +139,8 @@ function App() {
   function handleLogOut () {
     localStorage.removeItem('jwt');
     localStorage.removeItem('searcResults');
+    localStorage.removeItem('searchWord');
+    localStorage.removeItem('filterState');
     setIsLoggedIn(false);
     history.push('/signin');
   }
@@ -189,6 +193,10 @@ function App() {
       })
   }
 
+  function toggleCheckBox() {
+    setIsShortMovie(!isShortMovie);
+  }
+
   // Извлекает и записывает данные с локального хранилища в переменную состояния
   function getSearchResults() {
     const searchResults = JSON.parse(localStorage.getItem('searchResuts'));
@@ -216,14 +224,8 @@ function App() {
     // Проверяем все фильмы
     // Проверяем сохраненные фильмы
 
-    console.log(`In handleSearchRequest: movies: ${movies}`);
-    console.log(`In handleSearchRequest: savedMovies: ${savedMovies}`);
-
     const allFilteredMovies = filterBySearchWord(movies, word);
     const allSavedMovies = filterBySearchWord(savedMovies, word);
-
-    console.log(`In handleSearchRequest: allFilteredMovies: ${allFilteredMovies}`);
-    console.log(`In handleSearchRequest: allSavedMovies: ${allSavedMovies}`);
 
     // Сравниваем два массива,
     // повторяющиеся фильмы берем с серверной стороны
@@ -231,11 +233,6 @@ function App() {
       const savedMovie = allSavedMovies.find((savedM) => savedM.movieId === movie.id);
       return savedMovie ?? movie;
     })
-
-    if(movieList) {
-      console.log(`In handleSearchRequest: movieList: ${movieList}`);
-      console.log(`In handleSearchRequest: movieList is array: ${Array.isArray(movieList)}`);
-    }
 
     // Если результатов нет - записываем в переменную пустой массив
     if(movieList !== null && movieList.length !== 0) {
@@ -246,11 +243,6 @@ function App() {
       localStorage.setItem('searchResults', []);
       getSearchResults();
     }
-
-    
-    
-    console.log(`handleSearchRequest: searchresult in local storage: ${localStorage.getItem('searchResults')}`);
-    console.log(`handleSearchRequest: movieSearchResult: ${movieSearchResult}`);
   }
 
   // Проверяем наличие токена в локальном хранилище
@@ -345,6 +337,7 @@ function App() {
             handleSetLike={handleSetLike}
             handleRemoveLike={handleRemoveLike}
             onSearch={handleSearchRequest}
+            handleCheckboxToggle={toggleCheckBox}
             isLoggedIn={isLoggedIn} />
 
           <ProtectedRoute
@@ -353,6 +346,7 @@ function App() {
             savedMovies={savedMovies}
             handleRemoveLike={handleRemoveLike}
             onSearch={handleSearchRequest}
+            handleCheckboxToggle={toggleCheckBox}
             isLoggedIn={isLoggedIn} />
 
           <ProtectedRoute
