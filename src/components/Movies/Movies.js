@@ -5,7 +5,16 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import './Movies.css';
 
-function Movies({ movies, movieSearchResult, searchWord, handleSetLike, handleRemoveLike, onSearch, handleCheckboxToggle, isLoggedIn }) {
+function Movies({ 
+  movies,
+  moviesToRender,
+  handleSetLike,
+  handleRemoveLike,
+  onSearch,
+  handleCheckboxToggle,
+  setRender,
+  isLoggedIn,
+  isShortMovieChecked }) {
   
   return (
     <div className="movies">
@@ -13,12 +22,13 @@ function Movies({ movies, movieSearchResult, searchWord, handleSetLike, handleRe
       <SearchForm
         movies={movies}
         onSearch={onSearch}
-        handleCheckboxToggle={handleCheckboxToggle} />
+        handleCheckboxToggle={handleCheckboxToggle}
+        isShortMovieChecked={isShortMovieChecked} />
         <MoviesCardList
-          movieSearchResult={movieSearchResult}
+          moviesToRender={moviesToRender}
           handleSetLike={handleSetLike}
           onDislike={handleRemoveLike}
-          isLoggedIn={isLoggedIn} />
+          setRender={setRender} />
       <Footer />
     </div>
   )

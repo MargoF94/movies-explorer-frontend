@@ -34,20 +34,21 @@ function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
   }
 
   const thumbnail = route === '/movies' ? 
-    `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}` :
+    `https://api.nomoreparties.co${movie.image.url}` :
     `https://api.nomoreparties.co${movie.thumbnail}`;
 
-  const transformDuration = (duration) => {
-    const hours = Math.floor(duration / 60);
-    const mins = duration - hours * 60;
-    return`${hours > 0 ? hours + 'ч ' : ''}${!mins === 0 ? mins + 'м' : ''}`;
+  const transformDuration = () => {
+    const duration = movie.duration;
+    const hours = Math.floor(duration / 60); // часы
+    const mins = duration - hours * 60; // оставшиеся минуты
+    return`${hours > 0 ? hours + 'ч ' : ''}${mins > 0 ? mins + 'м' : ''}`;
   }
 
   return (
     <div className="card">
       <div className="card__info">
         <h3 className="card__title">{ movie.nameRU }</h3>
-        <span className="card__duration">{ transformDuration(movie.duration) }</span>
+        <span className="card__duration">{ transformDuration() }</span>
       </div>
       <a
         className="card__image-link"

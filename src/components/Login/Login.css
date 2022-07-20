@@ -37,7 +37,7 @@
 }
 
 .login__input {
-  margin-bottom: 24px;
+  margin-bottom: 6px;
   padding-bottom: 10px;
   padding-top: 5px;
   box-sizing: border-box;
@@ -58,6 +58,11 @@
 .login__input:focus {
   outline: none;
   border-bottom: 1px #3DDC84 solid;
+}
+
+.login__input_error {
+  color: #EE3465;
+  border-bottom: 1px solid #EE3465;
 }
 
 .login__label {
@@ -92,6 +97,13 @@
   opacity: 0.8;
 }
 
+.login__button_disabled {
+  opacity: 0.7;
+  cursor: default;
+  background: #F8F8F8;
+  color: #C2C2C2;
+}
+
 .login__text {
   margin: 16px 0 0;
   font-style: normal;
@@ -100,6 +112,20 @@
   line-height: 17px;
   text-align: center;
   color: #8B8B8B;
+}
+
+.login__error {
+  display: hidden;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  align-self: flex-start;
+}
+
+.login__error_active {
+  color: #EE3465;
+  display: inline;
 }
 
 .login__link {

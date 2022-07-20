@@ -1,28 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import './Login.css';
+import { FormValidation } from '../../utils/validation.js';
 import logo from '../../images/logo-big.svg';
 
 function Login({ handleLogin }) {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
-  };
-
-  function handlePasswordChange(e) {
-    setPassword(e.target.value);
-  };
+  const { values, handleChange, errors, isValid } = FormValidation();
 
   function onLogin(e) {
     e.preventDefault();
-    console.log('Login: prevented default on submit!');
-    console.log(`Login: current email: ${email} and passord:${password}`);
 
-    handleLogin(email, password);
+    handleLogin(values.email, values.password);
   }
+
+  console.info(`In Login ${JSON.stringify(values)}`);
 
   return (
     <div className="login">
@@ -42,16 +34,17 @@ function Login({ handleLogin }) {
             E-mail
         </label>
         <input
-          className="login__input"
-          type="text"
+          className={`login__input ${errors.email ? 'login__input_error' : ''}`}
+          type="email"
           id="form__login-email"
-          name="login-email"
-          onChange={handleEmailChange}
-          value={email || ''}
+          name="email"
+          onChange={handleChange}
+          value={values.email || ""}
           required />
         <span
           id="form__login-email-error"
-          className="form__input-error">
+          className={`login__error ${errors.email ? 'login__error_active' : ''}`}>
+          {errors.email}
         </span>
 
         <label
@@ -60,21 +53,23 @@ function Login({ handleLogin }) {
             Пароль
         </label>
         <input
-          className="login__input"
+          className={`login__input ${errors.password ? 'login__input_error' : ''}`}
           type="password"
           id="form__login-password"
           name="password"
-          onChange={handlePasswordChange}
-          value={password || ''}
+          onChange={handleChange}
+          value={values.password || ''}
           required />
         <span
           id="form__profile-description-error"
-          className="form__input-error">
+          className={`login__error ${errors.password ? 'login__error_active' : ''}`}>
+          {errors.password || ''}
         </span>
 
         <button
           type="submit"
-          className="login__button">
+          className={`login__button ${!isValid ? 'login__button_disabled' : ''}`}
+          disabled={!isValid}>
             Войти
         </button>
 

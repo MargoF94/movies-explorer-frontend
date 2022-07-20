@@ -1,30 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 
-function MoviesList({ movieSearchResult, savedMovies, handleSetLike, handleRemoveLike, isLoggedIn }) {
-  
-  const [moviesToRender, setMoviesToRender] = useState('');
-
-  const location = useLocation();
+function MoviesList({ 
+  moviesToRender,
+  handleSetLike,
+  handleRemoveLike,
+  setRender
+  }) {
 
   useEffect(() => {
-    if (location.pathname === '/movies') {
-      const searchResultLocalStorage = localStorage.getItem('searchResults');
-      if(searchResultLocalStorage.length === 0 || searchResultLocalStorage === null) {
-        setMoviesToRender([]);
-      } else {
-        setMoviesToRender(JSON.parse(localStorage.getItem('searchResults')))
-      }
-    } else if (location.pathname === '/saved-movies') {
-      if (savedMovies.length === 0 || savedMovies === null) {
-        setMoviesToRender([]);
-      } else {
-        setMoviesToRender(savedMovies);
-      }
-    }
-  }, []);
+    setRender();
+  }, [])
 
   return (
     <div className="movies-list">

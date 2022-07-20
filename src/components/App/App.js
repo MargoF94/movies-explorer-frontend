@@ -26,8 +26,9 @@ function App() {
   const [infoToolTipInfo, setInfoToolTipInfo] = useState({});
   const [movies, setMovies] = useState([]); // Фильмы, полученные от Api
   const [savedMovies, setSavedMovies] = useState([]); // Фильмы, сохраненные пользователем
+  const [moviesToRender, setMoviesToRender] = useState([]);
   const [movieSearchResult, setMovieSearchResult] = useState([]);
-  const [isShortMovie, setIsShortMovie] = useState(false);
+  const [isShortMovieChecked, setIsShortMovieChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // ЛОКАЛЬНОЕ ХРАНИЛИЩЕ
@@ -74,6 +75,8 @@ function App() {
   function handleLogin (email, password) {
     if (!email || !password) {
       console.log('No email or password on login; aborting.');
+      console.log(`Email: ${email}`);
+      console.log(`Password: ${password}`);
       return;
     }
     
@@ -85,6 +88,7 @@ function App() {
         localStorage.setItem('jwt', data.jwt);
         localStorage.setItem('searchResults', []);
         localStorage.setItem('filterState', false);
+        localStorage.setItem('searchWord', '');
         return data._id;
       })
       .then((id) => {
@@ -98,7 +102,6 @@ function App() {
           message: tooltip.loginSuccess,
           image: tooltip.successIcon
         })
-        console.log(`33333 In getSearchResults: ${localStorage.getItem('searchResults')}`);
       })
       .catch((err) => {
         console.log(err);
@@ -193,8 +196,9 @@ function App() {
       })
   }
 
+  // Переключатель состояния фильтра короткометражек
   function toggleCheckBox() {
-    setIsShortMovie(!isShortMovie);
+    setIsShortMovieChecked(!isShortMovieChecked);
   }
 
   // Извлекает и записывает данные с локального хранилища в переменную состояния
@@ -204,15 +208,34 @@ function App() {
   }
 
   // Функция по фильтрации массивов с фильмами по ключевому слову
+  // и длительности
 
-  function filterBySearchWord(list, word) {
-    // const array = list;
-    // console.log(`In filterBySearchWord: parsed array: ${array}`);
-    
+  function filterBySearchWord(list, word, isShortOn) {
     if (list.length > 0) {
-      return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
+      if (isShortOn) {
+        return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
+      } else {
+        return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
+      }
     } else {
       return [];
+    }
+  }
+
+  function setRender() {
+    const searchResultLocalStorage = localStorage.getItem('searchResults');
+    if (location.pathname === '/movies') {
+      if(searchResultLocalStorage.length === 0 || searchResultLocalStorage === null) {
+        setMoviesToRender([]);
+      } else {
+        setMoviesToRender(JSON.parse(localStorage.getItem('searchResults')))
+      }
+    } else if (location.pathname === '/saved-movies') {
+      if (savedMovies.length === 0 || savedMovies === null) {
+        setMoviesToRender([]);
+      } else {
+        setMoviesToRender(savedMovies);
+      }
     }
   }
 
@@ -224,8 +247,8 @@ function App() {
     // Проверяем все фильмы
     // Проверяем сохраненные фильмы
 
-    const allFilteredMovies = filterBySearchWord(movies, word);
-    const allSavedMovies = filterBySearchWord(savedMovies, word);
+    const allFilteredMovies = filterBySearchWord(movies, word, isShortMovieChecked);
+    const allSavedMovies = filterBySearchWord(savedMovies, word, isShortMovieChecked);
 
     // Сравниваем два массива,
     // повторяющиеся фильмы берем с серверной стороны
@@ -243,6 +266,7 @@ function App() {
       localStorage.setItem('searchResults', []);
       getSearchResults();
     }
+    setRender();
   }
 
   // Проверяем наличие токена в локальном хранилище
@@ -257,7 +281,7 @@ function App() {
       [];
 
     console.log(`Token in tokenCheck: ${jwt}`);
-    console.log(`Token in tokenCheck: ${isLoggedIn}`);
+    console.log(`Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
     console.log(`22222 In getSearchResults: ${movieSearchResult}`);
 
     if (jwt) {
@@ -267,18 +291,19 @@ function App() {
             setIsLoggedIn(true);
             setCurrentUser(user);
             setMovieSearchResult(savedMoviesFromStorage);
-            location.pathname === '/signin' && history.push('/movies');
+            location.pathname === '/signin' ? 
+              history.push('/movies') :
+              history.push(location.pathname);
             console.log(`Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
 
             console.log(`In tokenCheck: getContent currentUSer: ${currentUser}`);
             console.log(`In tokenCheck: getContent response: ${JSON.stringify(user)}`);
           } else {
             localStorage.removeItem('jwt');
-            setIsLoggedIn(false);
           }
         })
         .catch((err) => {
-          console.log(`Token in tokenCheck: ${jwt}`);
+          console.log(err);
           localStorage.removeItem('jwt');
         })
     }
@@ -332,22 +357,26 @@ function App() {
             path="/movies"
             component={Movies}
             movies={movies}
-            movieSearchResult={movieSearchResult}
+            moviesToRender={moviesToRender}
             searchWord={searchWordLocalStorage}
             handleSetLike={handleSetLike}
             handleRemoveLike={handleRemoveLike}
             onSearch={handleSearchRequest}
             handleCheckboxToggle={toggleCheckBox}
-            isLoggedIn={isLoggedIn} />
+            setRender={setRender}
+            isLoggedIn={isLoggedIn}
+            isShortMovieChecked={isShortMovieChecked} />
 
           <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
-            savedMovies={savedMovies}
+            moviesToRender={moviesToRender}
             handleRemoveLike={handleRemoveLike}
             onSearch={handleSearchRequest}
             handleCheckboxToggle={toggleCheckBox}
-            isLoggedIn={isLoggedIn} />
+            setRender={setRender}
+            isLoggedIn={isLoggedIn}
+            isShortMovieChecked={isShortMovieChecked} />
 
           <ProtectedRoute
             path="/profile"

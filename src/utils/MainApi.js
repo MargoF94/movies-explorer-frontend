@@ -94,12 +94,12 @@ export const createLocalCard = (movie) => {
       duration: movie.duration,
       year: movie.year,
       description: movie.description,
-      image: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+      image: `https://api.nomoreparties.co${movie.image.url}`,
       trailerLink: movie.trailerLink,
       nameRU: movie.nameRU,
       nameEN: movie.nameEN,
       thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
-      movieId: movie.id,
+      movieId: movie._id,
     }
   })
   .then(checkResponse)

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import './SearchForm.css';
 
-function SearchForm({ movies, onSearch, handleCheckboxToggle }) {
+function SearchForm({ movies, onSearch, handleCheckboxToggle, isShortMovieChecked }) {
 
   const [searchWord, setSearchWord] = useState(localStorage.getItem('searchWord'));
 
@@ -38,7 +38,8 @@ function SearchForm({ movies, onSearch, handleCheckboxToggle }) {
         </button>
       </form>
       <FilterCheckbox
-        handleCheckboxToggle={handleCheckboxToggle} />
+        handleCheckboxToggle={handleCheckboxToggle}
+        isShortMovieChecked={isShortMovieChecked} />
     </div>
   )
 }

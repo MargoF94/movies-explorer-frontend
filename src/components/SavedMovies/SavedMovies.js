@@ -5,19 +5,27 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import './SavedMovies.css';
 
-function SavedMovies({ savedMovies, handleRemoveLike, onSearch, handleCheckboxToggle, isLoggedIn }) {
+function SavedMovies({ 
+  moviesToRender,
+  handleRemoveLike,
+  onSearch,
+  handleCheckboxToggle,
+  setRender,
+  isLoggedIn,
+  isShortMovieChecked }) {
   
   return (
     <div className="movies">
       <Header isLoggedIn={isLoggedIn} />
       <SearchForm
-        savedMovies={savedMovies}
-        movies={savedMovies}
+        moviesToRender={moviesToRender}
         onSearch={onSearch}
-        handleCheckboxToggle={handleCheckboxToggle} />
+        handleCheckboxToggle={handleCheckboxToggle}
+        isShortMovieChecked={isShortMovieChecked} />
       <MoviesCardList
-          savedMovies={savedMovies}
+          moviesToRender={moviesToRender}
           onDislike={handleRemoveLike}
+          setRender={setRender}
           isLoggedIn={isLoggedIn} />
       <Footer />
     </div>
