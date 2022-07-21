@@ -38,6 +38,7 @@ function SearchForm({ movies, onSearch, handleCheckboxToggle, isShortMovieChecke
         </button>
       </form>
       <FilterCheckbox
+        onSearch={onSearch}
         handleCheckboxToggle={handleCheckboxToggle}
         isShortMovieChecked={isShortMovieChecked} />
     </div>

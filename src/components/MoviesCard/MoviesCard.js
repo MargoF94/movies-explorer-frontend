@@ -12,6 +12,7 @@ function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
   const route = useLocation().pathname;
 
   const onLike = () => {
+    console.log('A movie has been liked!');
     handleSetLike(movie);
   };
 

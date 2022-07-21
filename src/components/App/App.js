@@ -30,6 +30,7 @@ function App() {
   const [movieSearchResult, setMovieSearchResult] = useState([]);
   const [isShortMovieChecked, setIsShortMovieChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isNoResults, setIsNoResuls] = useState(false);
 
   // ЛОКАЛЬНОЕ ХРАНИЛИЩЕ
 
@@ -227,14 +228,18 @@ function App() {
     if (location.pathname === '/movies') {
       if(searchResultLocalStorage.length === 0 || searchResultLocalStorage === null) {
         setMoviesToRender([]);
+        setIsNoResuls(true);
       } else {
-        setMoviesToRender(JSON.parse(localStorage.getItem('searchResults')))
+        setMoviesToRender(JSON.parse(localStorage.getItem('searchResults')));
+        setIsNoResuls(false);
       }
     } else if (location.pathname === '/saved-movies') {
       if (savedMovies.length === 0 || savedMovies === null) {
         setMoviesToRender([]);
+        setIsNoResuls(true);
       } else {
         setMoviesToRender(savedMovies);
+        setIsNoResuls(false);
       }
     }
   }
@@ -244,29 +249,33 @@ function App() {
   // (так как только на них будет ярлык сохраненных));
 
   function handleSearchRequest(word) {
-    // Проверяем все фильмы
-    // Проверяем сохраненные фильмы
+    setIsLoading(true);
 
-    const allFilteredMovies = filterBySearchWord(movies, word, isShortMovieChecked);
-    const allSavedMovies = filterBySearchWord(savedMovies, word, isShortMovieChecked);
+    setTimeout(() => {
+      // Проверяем все фильмы
+      // Проверяем сохраненные фильмы
 
-    // Сравниваем два массива,
-    // повторяющиеся фильмы берем с серверной стороны
-    const movieList = allFilteredMovies.map((movie) => {
-      const savedMovie = allSavedMovies.find((savedM) => savedM.movieId === movie.id);
-      return savedMovie ?? movie;
-    })
+      const allFilteredMovies = filterBySearchWord(movies, word, isShortMovieChecked);
+      const allSavedMovies = filterBySearchWord(savedMovies, word, isShortMovieChecked);
 
-    // Если результатов нет - записываем в переменную пустой массив
-    if(movieList !== null && movieList.length !== 0) {
-      localStorage.setItem('searchResults', JSON.stringify(movieList));
-      getSearchResults();
-      console.log(`handleSearchRequest: local storage is not empty!`);
-    } else {
-      localStorage.setItem('searchResults', []);
-      getSearchResults();
-    }
-    setRender();
+      // Сравниваем два массива,
+      // повторяющиеся фильмы берем с серверной стороны
+      const movieList = allFilteredMovies.map((movie) => {
+        const savedMovie = allSavedMovies.find((savedM) => savedM.movieId === movie.id);
+        return savedMovie ?? movie;
+      })
+
+      // Если результатов нет - записываем в переменную пустой массив
+      if(movieList !== null && movieList.length !== 0) {
+        localStorage.setItem('searchResults', JSON.stringify(movieList));
+        getSearchResults();
+      } else {
+        localStorage.setItem('searchResults', []);
+        getSearchResults();
+      }
+      setRender();
+      setIsLoading(false);
+    }, 1000);
   }
 
   // Проверяем наличие токена в локальном хранилище
@@ -276,9 +285,9 @@ function App() {
 
   function tokenCheck () {
     const jwt = localStorage.getItem('jwt');
-    const savedMoviesFromStorage = (localStorage.getItem('searchResults') !== null && isLoggedIn) ?
-      JSON.parse(localStorage.getItem('searchResults')) :
-      [];
+    // const savedMoviesFromStorage = (localStorage.getItem('searchResults') !== null && isLoggedIn) ?
+    //   JSON.parse(localStorage.getItem('searchResults')) :
+    //   [];
 
     console.log(`Token in tokenCheck: ${jwt}`);
     console.log(`Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
@@ -290,7 +299,9 @@ function App() {
           if (user) {
             setIsLoggedIn(true);
             setCurrentUser(user);
-            setMovieSearchResult(savedMoviesFromStorage);
+            // setMovieSearchResult((localStorage.getItem('searchResults') !== null && isLoggedIn) ?
+            // JSON.parse(localStorage.getItem('searchResults')) :
+            // []);
             location.pathname === '/signin' ? 
               history.push('/movies') :
               history.push(location.pathname);
@@ -308,6 +319,16 @@ function App() {
         })
     }
   }
+
+  useEffect(() => {
+    console.log(`isLoggedIn ${isLoggedIn}`);
+    console.log(`searchResults ${localStorage.getItem('searchResults')}`);
+    if(isLoggedIn) {
+      setMovieSearchResult((localStorage.getItem('searchResults') > 0) ?
+        JSON.parse(localStorage.getItem('searchResults')) :
+        []);
+    }
+  }, [isLoggedIn])
 
   // Если пользователь залогинен
   // получаем все фильмы с API и сохраненные юзером фильмы
@@ -341,7 +362,7 @@ function App() {
   // из локального хранилища
   useEffect(() => {
     tokenCheck();
-  }, [history]);
+  }, []);
 
   
   return (
@@ -365,7 +386,9 @@ function App() {
             handleCheckboxToggle={toggleCheckBox}
             setRender={setRender}
             isLoggedIn={isLoggedIn}
-            isShortMovieChecked={isShortMovieChecked} />
+            isShortMovieChecked={isShortMovieChecked}
+            isNoResults={isNoResults}
+            isLoading={isLoading} />
 
           <ProtectedRoute
             path="/saved-movies"
@@ -376,7 +399,8 @@ function App() {
             handleCheckboxToggle={toggleCheckBox}
             setRender={setRender}
             isLoggedIn={isLoggedIn}
-            isShortMovieChecked={isShortMovieChecked} />
+            isShortMovieChecked={isShortMovieChecked}
+            isNoResults={isNoResults} />
 
           <ProtectedRoute
             path="/profile"

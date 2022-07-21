@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './FilterCheckbox.css';
 
-function FilterCheckbox({ handleCheckboxToggle, isShortMovieChecked }) {
+function FilterCheckbox({ onSearch, handleCheckboxToggle, isShortMovieChecked }) {
 
+  const searchWord = localStorage.getItem('searchWord');
 
   const classNameCircle = (
     isShortMovieChecked ? 
@@ -17,8 +18,12 @@ function FilterCheckbox({ handleCheckboxToggle, isShortMovieChecked }) {
   function onToggle() {
     console.log('CheckBox is being tickled');
     handleCheckboxToggle();
-    localStorage.setItem('filterState', isShortMovieChecked)
+    localStorage.setItem('filterState', isShortMovieChecked);
   }
+
+  useEffect(() => {
+    onSearch(searchWord)
+  }, [isShortMovieChecked])
 
   return (
     <label className="checkbox">

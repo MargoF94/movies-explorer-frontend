@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
+import Preloader from "../Preloader/Preloader";
 import './Movies.css';
 
 function Movies({ 
@@ -14,7 +15,9 @@ function Movies({
   handleCheckboxToggle,
   setRender,
   isLoggedIn,
-  isShortMovieChecked }) {
+  isShortMovieChecked,
+  isNoResults,
+  isLoading }) {
   
   return (
     <div className="movies">
@@ -24,11 +27,16 @@ function Movies({
         onSearch={onSearch}
         handleCheckboxToggle={handleCheckboxToggle}
         isShortMovieChecked={isShortMovieChecked} />
-        <MoviesCardList
-          moviesToRender={moviesToRender}
-          handleSetLike={handleSetLike}
-          onDislike={handleRemoveLike}
-          setRender={setRender} />
+      <Preloader 
+        isLoading={isLoading}
+      />
+      <MoviesCardList
+        moviesToRender={moviesToRender}
+        handleSetLike={handleSetLike}
+        onDislike={handleRemoveLike}
+        setRender={setRender}
+        isNoResults={isNoResults}
+        isLoggedIn={isLoggedIn} />
       <Footer />
     </div>
   )

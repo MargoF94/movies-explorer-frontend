@@ -12,7 +12,8 @@ function SavedMovies({
   handleCheckboxToggle,
   setRender,
   isLoggedIn,
-  isShortMovieChecked }) {
+  isShortMovieChecked,
+  isNoResults }) {
   
   return (
     <div className="movies">
@@ -26,7 +27,8 @@ function SavedMovies({
           moviesToRender={moviesToRender}
           onDislike={handleRemoveLike}
           setRender={setRender}
-          isLoggedIn={isLoggedIn} />
+          isLoggedIn={isLoggedIn}
+          isNoResults={isNoResults} />
       <Footer />
     </div>
   )
