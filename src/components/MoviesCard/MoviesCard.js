@@ -13,6 +13,7 @@ function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
 
   const onLike = () => {
     console.log('A movie has been liked!');
+    console.log(movie);
     handleSetLike(movie);
   };
 

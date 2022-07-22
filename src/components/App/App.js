@@ -104,6 +104,26 @@ function App() {
           image: tooltip.successIcon
         })
       })
+      // .then(() => {
+      //   Promise.all([
+      //     MoviesApi.getMovies(),
+      //     MainApi.getSavedMovies()
+      //   ])
+      //   .then(([allMovies, savedMovies]) => {
+      //     console.log(`In MainApi.getSavedMovies: movies: ${allMovies}`);
+      //     console.log(`In MainApi.getSavedMovies: savedMovies: ${savedMovies}`);
+      //     console.log(`In MainApi.getSavedMovies: savedMovies: ${Array.isArray(savedMovies)}`);
+      //     setMovies(allMovies);
+      //     if (savedMovies) {
+      //       setSavedMovies(savedMovies);
+      //     } else {
+      //       setSavedMovies([]);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   })
+      // })
       .catch((err) => {
         console.log(err);
         setInfoToolTipInfo({
@@ -224,13 +244,13 @@ function App() {
   }
 
   function setRender() {
-    const searchResultLocalStorage = localStorage.getItem('searchResults');
+    const searchResultLocalStorage = JSON.parse(localStorage.getItem('searchResults'));
     if (location.pathname === '/movies') {
       if(searchResultLocalStorage.length === 0 || searchResultLocalStorage === null) {
         setMoviesToRender([]);
         setIsNoResuls(true);
       } else {
-        setMoviesToRender(JSON.parse(localStorage.getItem('searchResults')));
+        setMoviesToRender(searchResultLocalStorage);
         setIsNoResuls(false);
       }
     } else if (location.pathname === '/saved-movies') {
@@ -251,6 +271,9 @@ function App() {
   function handleSearchRequest(word) {
     setIsLoading(true);
 
+    console.log(`IN SEARCH: MOVIES ${movies}`)
+    console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`)
+
     setTimeout(() => {
       // Проверяем все фильмы
       // Проверяем сохраненные фильмы
@@ -267,6 +290,7 @@ function App() {
 
       // Если результатов нет - записываем в переменную пустой массив
       if(movieList !== null && movieList.length !== 0) {
+        console.log(`SAVING SEARCH RESULTS IN LOCAL STORAGE: ${movieList}`)
         localStorage.setItem('searchResults', JSON.stringify(movieList));
         getSearchResults();
       } else {
@@ -290,18 +314,20 @@ function App() {
     //   [];
 
     console.log(`Token in tokenCheck: ${jwt}`);
-    console.log(`Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
+    console.log(`777777777 Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
     console.log(`22222 In getSearchResults: ${movieSearchResult}`);
 
     if (jwt) {
       MainApi.getContent(jwt)
         .then((user) => {
           if (user) {
-            setIsLoggedIn(true);
             setCurrentUser(user);
-            // setMovieSearchResult((localStorage.getItem('searchResults') !== null && isLoggedIn) ?
-            // JSON.parse(localStorage.getItem('searchResults')) :
-            // []);
+            setIsLoggedIn(true);
+            console.log(`searchResults ${localStorage.getItem('searchResults')}`);
+            // setMovieSearchResult((localStorage.getItem('searchResults') > 0) ?
+            //   JSON.parse(localStorage.getItem('searchResults')) :
+            //   []);
+            getSearchResults();
             location.pathname === '/signin' ? 
               history.push('/movies') :
               history.push(location.pathname);
@@ -320,15 +346,15 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    console.log(`isLoggedIn ${isLoggedIn}`);
-    console.log(`searchResults ${localStorage.getItem('searchResults')}`);
-    if(isLoggedIn) {
-      setMovieSearchResult((localStorage.getItem('searchResults') > 0) ?
-        JSON.parse(localStorage.getItem('searchResults')) :
-        []);
-    }
-  }, [isLoggedIn])
+  // useEffect(() => {
+  //   console.log(`isLoggedIn ${isLoggedIn}`);
+  //   console.log(`searchResults ${localStorage.getItem('searchResults')}`);
+  //   if(isLoggedIn) {
+  //     setMovieSearchResult((localStorage.getItem('searchResults') > 0) ?
+  //       JSON.parse(localStorage.getItem('searchResults')) :
+  //       []);
+  //   }
+  // }, [isLoggedIn])
 
   // Если пользователь залогинен
   // получаем все фильмы с API и сохраненные юзером фильмы
@@ -361,8 +387,9 @@ function App() {
   // Перезаписываем отфильтрованные фильмы в переменную состояния
   // из локального хранилища
   useEffect(() => {
+    console.log(`8888888888 isLoggedIn ${isLoggedIn}`);
     tokenCheck();
-  }, []);
+  }, [history]);
 
   
   return (

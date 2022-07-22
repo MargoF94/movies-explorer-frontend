@@ -49,7 +49,7 @@ function MoviesList({
   useEffect(() => {
     console.info(localStorage.getItem('searchResults'));
     setRender();
-  }, [isLoggedIn]);
+  }, []);
 
   return (
     <div className="movies-list">
@@ -59,7 +59,7 @@ function MoviesList({
           displayedMovies.length > 0 &&
           displayedMovies.map((movie) => {
             return <MoviesCard
-              key={movie.movieId || movie._id}
+              key={movie.movieId || movie.id}
               movie={movie}
               handleSetLike={handleSetLike}
               handleRemoveLike={handleRemoveLike} />

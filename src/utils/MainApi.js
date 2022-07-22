@@ -88,7 +88,7 @@ export const createLocalCard = (movie) => {
       "Content-Type": "application/json",
       "Authorization": `${localStorage.getItem('jwt')}`
     }, 
-    body: {
+    body: JSON.stringify({
       country: movie.country,
       director: movie.director,
       duration: movie.duration,
@@ -99,8 +99,8 @@ export const createLocalCard = (movie) => {
       nameRU: movie.nameRU,
       nameEN: movie.nameEN,
       thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
-      movieId: movie._id,
-    }
+      movieId: movie.id,
+    })
   })
   .then(checkResponse)
 }
