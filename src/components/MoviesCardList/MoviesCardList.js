@@ -3,8 +3,9 @@ import { useLocation } from "react-router";
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.css';
 
-function MoviesList({ 
-  moviesToRender,
+function MoviesList({
+  movies,
+  movieSearchResult,
   handleSetLike,
   handleRemoveLike,
   setRender,
@@ -13,6 +14,8 @@ function MoviesList({
   }) {
 
   console.log(`isNoResults? ${isNoResults}`);
+
+  console.log(Array.isArray(movies));
 
   const getMoviesToDisplay = () => {
     const windowWidth = window.innerWidth;
@@ -40,16 +43,16 @@ function MoviesList({
     }
   };
 
-  const displayedMovies = moviesToRender.slice(0, count);
+  const displayedMovies = movies.slice(0, count);
 
   useEffect(() => {
     window.addEventListener('resize', getMoviesToDisplay)
   }, []);
 
-  useEffect(() => {
-    console.info(localStorage.getItem('searchResults'));
-    setRender();
-  }, []);
+  // useEffect(() => {
+  //   console.info(localStorage.getItem('searchResults'));
+  //   setRender();
+  // }, []);
 
   return (
     <div className="movies-list">
@@ -59,7 +62,7 @@ function MoviesList({
           displayedMovies.length > 0 &&
           displayedMovies.map((movie) => {
             return <MoviesCard
-              key={movie.movieId || movie.id}
+              key={movie.movieId || movie.id || movie._id}
               movie={movie}
               handleSetLike={handleSetLike}
               handleRemoveLike={handleRemoveLike} />
@@ -68,9 +71,9 @@ function MoviesList({
       </div>
 
       <button 
-        className={`movies-list__button-more ${count >= moviesToRender.length && 'movies-list__button-more_disabled'} ${location === '/saved-movies' && 'movies-list__button-more_invisible'}`}
+        className={`movies-list__button-more ${count >= movies.length && 'movies-list__button-more_disabled'} ${location === '/saved-movies' && 'movies-list__button-more_invisible'}`}
         onClick={addMoreMovies}
-        disabled={count >= moviesToRender.length}>
+        disabled={count >= movies.length}>
         Ещё
       </button>
     </div>

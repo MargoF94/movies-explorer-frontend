@@ -8,7 +8,6 @@ import './Movies.css';
 
 function Movies({ 
   movies,
-  moviesToRender,
   handleSetLike,
   handleRemoveLike,
   onSearch,
@@ -23,7 +22,6 @@ function Movies({
     <div className="movies">
       <Header isLoggedIn={isLoggedIn} />
       <SearchForm
-        movies={movies}
         onSearch={onSearch}
         handleCheckboxToggle={handleCheckboxToggle}
         isShortMovieChecked={isShortMovieChecked} />
@@ -31,7 +29,7 @@ function Movies({
         isLoading={isLoading}
       />
       <MoviesCardList
-        moviesToRender={moviesToRender}
+        movies={movies}
         handleSetLike={handleSetLike}
         onDislike={handleRemoveLike}
         setRender={setRender}

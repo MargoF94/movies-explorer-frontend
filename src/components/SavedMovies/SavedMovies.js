@@ -6,6 +6,7 @@ import Footer from '../Footer/Footer';
 import './SavedMovies.css';
 
 function SavedMovies({ 
+  movies,
   moviesToRender,
   handleRemoveLike,
   onSearch,
@@ -15,6 +16,8 @@ function SavedMovies({
   isShortMovieChecked,
   isNoResults }) {
   
+    console.log(`In '/saved-movies' savedMovies: ${movies}`);
+
   return (
     <div className="movies">
       <Header isLoggedIn={isLoggedIn} />
@@ -24,6 +27,7 @@ function SavedMovies({
         handleCheckboxToggle={handleCheckboxToggle}
         isShortMovieChecked={isShortMovieChecked} />
       <MoviesCardList
+          movies={movies}
           moviesToRender={moviesToRender}
           onDislike={handleRemoveLike}
           setRender={setRender}

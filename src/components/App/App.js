@@ -97,33 +97,13 @@ function App() {
         setCurrentUser({
           _id: id,
         });
-        setIsLoggedIn(true);
-        history.push('/movies');
+        // setIsLoggedIn(true);
+        // history.push('/movies');
         setInfoToolTipInfo({
           message: tooltip.loginSuccess,
           image: tooltip.successIcon
         })
       })
-      // .then(() => {
-      //   Promise.all([
-      //     MoviesApi.getMovies(),
-      //     MainApi.getSavedMovies()
-      //   ])
-      //   .then(([allMovies, savedMovies]) => {
-      //     console.log(`In MainApi.getSavedMovies: movies: ${allMovies}`);
-      //     console.log(`In MainApi.getSavedMovies: savedMovies: ${savedMovies}`);
-      //     console.log(`In MainApi.getSavedMovies: savedMovies: ${Array.isArray(savedMovies)}`);
-      //     setMovies(allMovies);
-      //     if (savedMovies) {
-      //       setSavedMovies(savedMovies);
-      //     } else {
-      //       setSavedMovies([]);
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   })
-      // })
       .catch((err) => {
         console.log(err);
         setInfoToolTipInfo({
@@ -222,12 +202,6 @@ function App() {
     setIsShortMovieChecked(!isShortMovieChecked);
   }
 
-  // Извлекает и записывает данные с локального хранилища в переменную состояния
-  function getSearchResults() {
-    const searchResults = JSON.parse(localStorage.getItem('searchResuts'));
-    setMovieSearchResult(searchResults === null ? [] : searchResults );
-  }
-
   // Функция по фильтрации массивов с фильмами по ключевому слову
   // и длительности
 
@@ -243,8 +217,20 @@ function App() {
     }
   }
 
+  // Достает результаты поиска из локального хранилища и записывает
+  // в переменную состояния
+
   function setRender() {
-    const searchResultLocalStorage = JSON.parse(localStorage.getItem('searchResults'));
+
+    console.log('ACTION 4 (retriving movies from local storage)');
+    console.log(`isLoggedIn ${isLoggedIn}`)
+    // Проверяем, пусто ли хранилище.
+    // Если нет - достаем из него массив и записываем в переменную;
+    // если да - записываем пустой массив
+    const searchResultLocalStorage = localStorage.getItem('searchResults').length > 0 ?
+      JSON.parse(localStorage.getItem('searchResults')) :
+      [];
+
     if (location.pathname === '/movies') {
       if(searchResultLocalStorage.length === 0 || searchResultLocalStorage === null) {
         setMoviesToRender([]);
@@ -272,7 +258,8 @@ function App() {
     setIsLoading(true);
 
     console.log(`IN SEARCH: MOVIES ${movies}`)
-    console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`)
+    console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
+    console.log(isShortMovieChecked);
 
     setTimeout(() => {
       // Проверяем все фильмы
@@ -292,12 +279,14 @@ function App() {
       if(movieList !== null && movieList.length !== 0) {
         console.log(`SAVING SEARCH RESULTS IN LOCAL STORAGE: ${movieList}`)
         localStorage.setItem('searchResults', JSON.stringify(movieList));
-        getSearchResults();
+        setIsNoResuls(false);
       } else {
         localStorage.setItem('searchResults', []);
-        getSearchResults();
+        setIsNoResuls(true);
       }
-      setRender();
+
+      setMovieSearchResult(movieList);
+      // setRender();
       setIsLoading(false);
     }, 1000);
   }
@@ -312,7 +301,7 @@ function App() {
     // const savedMoviesFromStorage = (localStorage.getItem('searchResults') !== null && isLoggedIn) ?
     //   JSON.parse(localStorage.getItem('searchResults')) :
     //   [];
-
+    console.log('ACTION 1 (tokenCheck)');
     console.log(`Token in tokenCheck: ${jwt}`);
     console.log(`777777777 Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
     console.log(`22222 In getSearchResults: ${movieSearchResult}`);
@@ -323,11 +312,7 @@ function App() {
           if (user) {
             setCurrentUser(user);
             setIsLoggedIn(true);
-            console.log(`searchResults ${localStorage.getItem('searchResults')}`);
-            // setMovieSearchResult((localStorage.getItem('searchResults') > 0) ?
-            //   JSON.parse(localStorage.getItem('searchResults')) :
-            //   []);
-            getSearchResults();
+            setMovieSearchResult(getSearchResults);
             location.pathname === '/signin' ? 
               history.push('/movies') :
               history.push(location.pathname);
@@ -346,33 +331,38 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   console.log(`isLoggedIn ${isLoggedIn}`);
-  //   console.log(`searchResults ${localStorage.getItem('searchResults')}`);
-  //   if(isLoggedIn) {
-  //     setMovieSearchResult((localStorage.getItem('searchResults') > 0) ?
-  //       JSON.parse(localStorage.getItem('searchResults')) :
-  //       []);
-  //   }
-  // }, [isLoggedIn])
+  // Извлекает и записывает данные с локального хранилища в переменную состояния
+
+  function getSearchResults() {
+    return localStorage.getItem('searchResults').length > 0 ?
+      JSON.parse(localStorage.getItem('searchResults')) :
+      [];
+  }
 
   // Если пользователь залогинен
   // получаем все фильмы с API и сохраненные юзером фильмы
 
   useEffect(() => {
-    console.log(`Fetching movies...`);
-
     if(isLoggedIn) {
+      console.log(`Fetching movies...`);
+      console.log('ACTION 2 (about to fetch movies)');
+
       Promise.all([
         MoviesApi.getMovies(),
         MainApi.getSavedMovies()
       ])
-      .then(([allMovies, savedMovies]) => {
-        console.log(`In MainApi.getSavedMovies: savedMovies: ${savedMovies}`);
-        console.log(`In MainApi.getSavedMovies: savedMovies: ${Array.isArray(savedMovies)}`);
+      .then(([allMovies, userSavedMovies]) => {
+        console.log('ACTION 3 (about to set movies and savedMovies)');
+        console.log(`In MainApi.getSavedMovies: allMovies: ${allMovies}`);
+        console.log(`In MainApi.getSavedMovies: allMovies: ${JSON.stringify(allMovies)}`);
+        console.log(`In MainApi.getSavedMovies: allMovies: ${Array.isArray(allMovies)}`);
+        console.log(`In MainApi.getSavedMovies: savedMovies: ${userSavedMovies}`);
+        console.log(`In MainApi.getSavedMovies: savedMovies: ${JSON.stringify(userSavedMovies)}`);
+        console.log(`In MainApi.getSavedMovies: savedMovies: ${Array.isArray(userSavedMovies)}`);
         setMovies(allMovies);
-        if (savedMovies) {
-          setSavedMovies(savedMovies);
+        if (userSavedMovies) {
+          setSavedMovies(userSavedMovies);
+          console.log(`In MainApi.getSavedMovies: savedMovies: ${savedMovies}`);
         } else {
           setSavedMovies([]);
         }
@@ -389,7 +379,11 @@ function App() {
   useEffect(() => {
     console.log(`8888888888 isLoggedIn ${isLoggedIn}`);
     tokenCheck();
-  }, [history]);
+  }, []);
+
+  // useEffect(() => {
+  //   setRender();
+  // }, [isLoggedIn, savedMovies]);
 
   
   return (
@@ -404,8 +398,7 @@ function App() {
           <ProtectedRoute
             path="/movies"
             component={Movies}
-            movies={movies}
-            moviesToRender={moviesToRender}
+            movies={movieSearchResult}
             searchWord={searchWordLocalStorage}
             handleSetLike={handleSetLike}
             handleRemoveLike={handleRemoveLike}
@@ -413,20 +406,19 @@ function App() {
             handleCheckboxToggle={toggleCheckBox}
             setRender={setRender}
             isLoggedIn={isLoggedIn}
-            isShortMovieChecked={isShortMovieChecked}
             isNoResults={isNoResults}
             isLoading={isLoading} />
 
           <ProtectedRoute
             path="/saved-movies"
             component={SavedMovies}
+            movies={savedMovies}
             moviesToRender={moviesToRender}
             handleRemoveLike={handleRemoveLike}
             onSearch={handleSearchRequest}
             handleCheckboxToggle={toggleCheckBox}
             setRender={setRender}
             isLoggedIn={isLoggedIn}
-            isShortMovieChecked={isShortMovieChecked}
             isNoResults={isNoResults} />
 
           <ProtectedRoute
