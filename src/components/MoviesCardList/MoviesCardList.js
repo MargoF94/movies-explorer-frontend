@@ -5,7 +5,7 @@ import './MoviesCardList.css';
 
 function MoviesList({
   movies,
-  movieSearchResult,
+  savedMovies,
   handleSetLike,
   handleRemoveLike,
   setRender,
@@ -13,9 +13,9 @@ function MoviesList({
   isLoggedIn
   }) {
 
-  console.log(`isNoResults? ${isNoResults}`);
+  // console.log(`isNoResults? ${isNoResults}`);
 
-  console.log(Array.isArray(movies));
+  // console.log(Array.isArray(movies));
 
   const getMoviesToDisplay = () => {
     const windowWidth = window.innerWidth;
@@ -36,7 +36,7 @@ function MoviesList({
   const addMoreMovies = () => {
     const windowWidth = window.innerWidth;
 
-    if (windowWidth < 768) {
+    if (windowWidth < 1280) {
       setCount(count + 2)
     } else {
       setCount(count + 3)
@@ -64,6 +64,8 @@ function MoviesList({
             return <MoviesCard
               key={movie.movieId || movie.id || movie._id}
               movie={movie}
+              movies={movies}
+              savedMovies={savedMovies}
               handleSetLike={handleSetLike}
               handleRemoveLike={handleRemoveLike} />
           })

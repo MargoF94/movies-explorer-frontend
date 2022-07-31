@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import './FilterCheckbox.css';
 
-function FilterCheckbox({ onSearch, handleCheckboxToggle }) {
+function FilterCheckbox({ isShortMovieChecked, onSearch, handleCheckboxToggle }) {
+  
+  // const [filterState, setFilterState] = useState(localStorage.getItem('filterState'))
 
   const searchWord = localStorage.getItem('searchWord');
-  const filterState= localStorage.getItem('filterState');
-  console.log(filterState);
+  // const filterState= localStorage.getItem('filterState');
+  console.log(`FILTER STATE ON MOUNTING IS ${isShortMovieChecked}`);
 
   const classNameCircle = (
-    filterState ? 
+    isShortMovieChecked ? 
       'checkbox__circle_checked' : 
       'checkbox__circle_unchecked'
   )
 
   const classNameBG = (
-    filterState ? '' : 'checkbox__new-check_unchecked'
+    isShortMovieChecked ? '' : 'checkbox__new-check_unchecked'
   )
 
   // function onToggle() {
@@ -24,9 +26,11 @@ function FilterCheckbox({ onSearch, handleCheckboxToggle }) {
   // }
 
   function onToggle() {
-    handleCheckboxToggle();
-    localStorage.setItem('filterState', filterState);
-    console.log(filterState);
+    // handleCheckboxToggle();
+    // localStorage.setItem('filterState', true ? false : true);
+    handleCheckboxToggle(searchWord)
+    // setFilterState(!filterState);
+    // console.log(`FILTER STATE ON TOGGLE IS ${localStorage.getItem('filterState')}`);
     onSearch(searchWord);
   }
 

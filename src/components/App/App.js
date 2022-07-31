@@ -28,7 +28,7 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]); // Фильмы, сохраненные пользователем
   const [moviesToRender, setMoviesToRender] = useState([]);
   const [movieSearchResult, setMovieSearchResult] = useState([]);
-  const [isShortMovieChecked, setIsShortMovieChecked] = useState(false);
+  const [isShortMovieChecked, setIsShortMovieChecked] = useState( );
   const [isLoading, setIsLoading] = useState(false);
   const [isNoResults, setIsNoResuls] = useState(false);
 
@@ -158,34 +158,52 @@ function App() {
 
   function handleSetLike(movie) {
 
-    console.log(`In HandleSetLike: jwt: ${localStorage.getItem('jwt')}`);
-    console.log(`In HandleSetLike: movie: ${movie}`);
+    console.log(`IN SRT LIKE: movie: ${movie}`);
 
-    MainApi.createLocalCard(movie)
-      .then((createdMovie) => {
-        console.log(`Saved movie in handleSetLike: ${createdMovie}`);
+    const isSaved = savedMovies.find((savedMovie) => savedMovie.movieId  === movie.movieId);
+
+    console.log(`IN SET LIKE ISSAVED: ${isSaved}`);
+
+    if(isSaved === undefined) {
+      MainApi.createLocalCard(movie)
+      .then((data) => {
+        console.log(data);
+        const createdMovie = data.movie;
+
+        setInfoToolTipInfo({
+          message: tooltip.saveSuccess,
+          image: tooltip.successIcon
+        });
         setSavedMovies([createdMovie, ...savedMovies])
       })
       .catch((err) => {
-        console.log(err);
         setInfoToolTipInfo({
           message: tooltip.saveFail,
           image: tooltip.failIcon
         });
         setIsInfoToolTipOpen(true);
       })
+      .finally(() => {
+        setIsInfoToolTipOpen(true);
+      })
+    } else {
+      setInfoToolTipInfo({
+        message: tooltip.saveFailRepeat,
+        image: tooltip.failIcon
+      });
+      setIsInfoToolTipOpen(true);
+    } 
   }
 
   function handleRemoveLike (movie) {
+    console.log(`In App handleRemoveLike movie: ${JSON.stringify(movie.movieId)}`);
     MainApi.deleteLocalMovie(movie.movieId)
       .then(() => {
-        MainApi.getSavedMovies
-          .then((movies) => {
-            setSavedMovies(movies);
-          })
-          .catch((err) => {
-            console.log(err);
-          })
+        setSavedMovies((savedMovies) => savedMovies.filter((m) => m.movieId !== movie.movieId));
+        setInfoToolTipInfo({
+          message: tooltip.removeSuccess,
+          image: tooltip.successIcon
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -193,13 +211,20 @@ function App() {
           message: tooltip.removeFail,
           image: tooltip.failIcon
         });
-        setIsInfoToolTipOpen(true);
       })
+      .finally(() => {
+        setIsInfoToolTipOpen(true);
+      });
   }
 
   // Переключатель состояния фильтра короткометражек
+  // Переписывает значение фильтра на локальном диске и 
+  // переменной состояния
   function toggleCheckBox() {
     setIsShortMovieChecked(!isShortMovieChecked);
+    // const filter = localStorage.getItem('filterState');
+    localStorage.setItem('filterState', isShortMovieChecked);
+    // console.log(`FILTER STATE ON TOGGLE IS ${localStorage.getItem('filterState')}`);
   }
 
   // Функция по фильтрации массивов с фильмами по ключевому слову
@@ -207,7 +232,7 @@ function App() {
 
   function filterBySearchWord(list, word, isShortOn) {
     if (list.length > 0) {
-      if (isShortOn) {
+      if (!isShortOn) {
         return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
       } else {
         return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
@@ -248,32 +273,79 @@ function App() {
         setIsNoResuls(false);
       }
     }
+
+    // Обновляем значение фильтра короткометражек на локальном хранилище
+    localStorage.setItem('filterState', isShortMovieChecked);
   }
 
   // При отображении фильмов в блоке результатов
   // фильмы, ранее сохраненные пользователем берутся с сервера
   // (так как только на них будет ярлык сохраненных));
 
+  // function handleSearchRequest(word) {
+  //   setIsLoading(true);
+
+  //   console.log(`IN SEARCH: MOVIES ${movies}`)
+  //   console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
+  //   console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
+
+  //   setTimeout(() => {
+  //     // Достаем состояние переключателя из локального хранилища
+  //     // Проверяем все фильмы
+  //     // Проверяем сохраненные фильмы
+  //     // const isFilterOn = localStorage.getItem('filterState');
+  //     // console.log(`FILTER STATE ON SEARCH IS ${isFilterOn}`);
+
+  //     const allFilteredMovies = filterBySearchWord(movies, word, isShortMovieChecked);
+  //     const allSavedMovies = filterBySearchWord(savedMovies, word, isShortMovieChecked);
+
+  //     // Сравниваем два массива,
+  //     // повторяющиеся фильмы берем с серверной стороны
+  //     const movieList = allFilteredMovies.map((movie) => {
+  //       const savedMovie = allSavedMovies.find((savedM) => savedM.movieId === movie.id);
+  //       return savedMovie ?? movie;
+  //     })
+
+  //     // Если результатов нет - записываем в переменную пустой массив
+  //     if(movieList !== null && movieList.length !== 0) {
+  //       console.log(`SAVING SEARCH RESULTS IN LOCAL STORAGE: ${movieList}`)
+  //       localStorage.setItem('searchResults', JSON.stringify(movieList));
+  //       setIsNoResuls(false);
+  //     } else {
+  //       localStorage.setItem('searchResults', []);
+  //       setIsNoResuls(true);
+  //     }
+
+  //     setMovieSearchResult(movieList);
+  //     // setRender();
+  //     setIsLoading(false);
+  //   }, 1000);
+  // }
+
   function handleSearchRequest(word) {
     setIsLoading(true);
 
     console.log(`IN SEARCH: MOVIES ${movies}`)
     console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
-    console.log(isShortMovieChecked);
+    console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
 
     setTimeout(() => {
+      // Достаем состояние переключателя из локального хранилища
       // Проверяем все фильмы
       // Проверяем сохраненные фильмы
+      // const isFilterOn = localStorage.getItem('filterState');
+      // console.log(`FILTER STATE ON SEARCH IS ${isFilterOn}`);
+      const moviesToFilter = location.pathname === '/movies' ? movies : savedMovies;
 
-      const allFilteredMovies = filterBySearchWord(movies, word, isShortMovieChecked);
-      const allSavedMovies = filterBySearchWord(savedMovies, word, isShortMovieChecked);
+      const movieList = filterBySearchWord(moviesToFilter, word, isShortMovieChecked);
+  
 
       // Сравниваем два массива,
       // повторяющиеся фильмы берем с серверной стороны
-      const movieList = allFilteredMovies.map((movie) => {
-        const savedMovie = allSavedMovies.find((savedM) => savedM.movieId === movie.id);
-        return savedMovie ?? movie;
-      })
+      // const movieList = allFilteredMovies.map((movie) => {
+      //   const savedMovie = allSavedMovies.find((savedM) => savedM.movieId === movie.id);
+      //   return savedMovie ?? movie;
+      // })
 
       // Если результатов нет - записываем в переменную пустой массив
       if(movieList !== null && movieList.length !== 0) {
@@ -298,6 +370,8 @@ function App() {
 
   function tokenCheck () {
     const jwt = localStorage.getItem('jwt');
+    // const filter = localStorage.getItem('filterState');
+    // console.log(filter);
     // const savedMoviesFromStorage = (localStorage.getItem('searchResults') !== null && isLoggedIn) ?
     //   JSON.parse(localStorage.getItem('searchResults')) :
     //   [];
@@ -313,6 +387,8 @@ function App() {
             setCurrentUser(user);
             setIsLoggedIn(true);
             setMovieSearchResult(getSearchResults);
+            setIsShortMovieChecked(JSON.parse(localStorage.getItem('filterState')));
+            console.log(`isShortMovieChecked ${isShortMovieChecked}`)
             location.pathname === '/signin' ? 
               history.push('/movies') :
               history.push(location.pathname);
@@ -399,6 +475,7 @@ function App() {
             path="/movies"
             component={Movies}
             movies={movieSearchResult}
+            savedMovies={savedMovies}
             searchWord={searchWordLocalStorage}
             handleSetLike={handleSetLike}
             handleRemoveLike={handleRemoveLike}
@@ -406,6 +483,7 @@ function App() {
             handleCheckboxToggle={toggleCheckBox}
             setRender={setRender}
             isLoggedIn={isLoggedIn}
+            isShortMovieChecked={isShortMovieChecked}
             isNoResults={isNoResults}
             isLoading={isLoading} />
 
@@ -419,6 +497,7 @@ function App() {
             handleCheckboxToggle={toggleCheckBox}
             setRender={setRender}
             isLoggedIn={isLoggedIn}
+            isShortMovieChecked={isShortMovieChecked}
             isNoResults={isNoResults} />
 
           <ProtectedRoute

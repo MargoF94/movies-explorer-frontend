@@ -82,6 +82,7 @@ export const editProfile = ( name, email ) => {
 // Сохраняем пришедший с API фильм локально
 
 export const createLocalCard = (movie) => {
+  console.log(`IN SAVE API MOVIE: ${JSON.stringify(movie.image.url)}`);
   return fetch(`${mainApiUrl}/api/movies`, {
     method: 'POST',
     headers: {
@@ -95,11 +96,11 @@ export const createLocalCard = (movie) => {
       year: movie.year,
       description: movie.description,
       image: `https://api.nomoreparties.co${movie.image.url}`,
-      trailerLink: movie.trailerLink,
+      trailerLink: movie.trailerLink || '',
       thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
       movieId: movie.id,
-      nameRU: movie.nameRU,
-      nameEN: movie.nameEN,
+      nameRU: movie.nameRU || '',
+      nameEN: movie.nameEN || '',
     })
   })
   .then(checkResponse)
@@ -108,7 +109,7 @@ export const createLocalCard = (movie) => {
 // Снятие лайка
 
 export const deleteLocalMovie = (movieId) => {
-  return fetch(`${mainApiUrl}/api/movies/movieId`, {
+  return fetch(`${mainApiUrl}/api/movies/${movieId}`, {
     method: 'DELETE',
     headers: {
       "Content-Type": "application/json",

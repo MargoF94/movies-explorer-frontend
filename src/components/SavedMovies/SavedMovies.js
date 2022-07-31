@@ -29,7 +29,7 @@ function SavedMovies({
       <MoviesCardList
           movies={movies}
           moviesToRender={moviesToRender}
-          onDislike={handleRemoveLike}
+          handleRemoveLike={handleRemoveLike}
           setRender={setRender}
           isLoggedIn={isLoggedIn}
           isNoResults={isNoResults} />

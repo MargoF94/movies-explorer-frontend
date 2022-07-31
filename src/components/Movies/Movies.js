@@ -8,6 +8,7 @@ import './Movies.css';
 
 function Movies({ 
   movies,
+  savedMovies,
   handleSetLike,
   handleRemoveLike,
   onSearch,
@@ -30,8 +31,9 @@ function Movies({
       />
       <MoviesCardList
         movies={movies}
+        savedMovies={savedMovies}
         handleSetLike={handleSetLike}
-        onDislike={handleRemoveLike}
+        handleRemoveLike={handleRemoveLike}
         setRender={setRender}
         isNoResults={isNoResults}
         isLoggedIn={isLoggedIn} />

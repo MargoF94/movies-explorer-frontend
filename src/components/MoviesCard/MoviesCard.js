@@ -1,24 +1,92 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './MoviesCard.css';
 import saved from '../../images/icon_saved.svg';
 import unsaved from '../../images/unsave-icon.svg';
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+// import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useLocation } from "react-router";
 
-function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
+function MoviesCard({ movie, movies, savedMovies, handleSetLike, handleRemoveLike }) {
 
-  const currentUser = useContext(CurrentUserContext);
-  const isSaved = movie.owner === currentUser._id;
+  // const currentUser = useContext(CurrentUserContext);
   const route = useLocation().pathname;
+  let isSaved;
+
+  function getIsSaved () {
+    if (route === '/movies') {
+
+      // если id данной карточки соответствует id одной из сохраненных карточек
+      // задать значение isSaved - true
+      // если нет - false
+
+      // console.log(savedMovies);
+      const isMovieSaved = savedMovies.filter(item => item.movieId === movie.id);
+      // console.log(isMovieSaved);
+      isSaved = isMovieSaved.length > 0 ? true : false;
+      // console.log(isSaved)
+    } else if (route === '/saved-movies') {
+      isSaved = true;
+      }
+    }
+
+    getIsSaved();
+  // const [isSaved, setIsSaved] = useState(() => {
+  //   getIsSaved();
+  // });
+
+  // console.log(movie.image.url, isSaved);
+  // console.log(movie.image, isSaved);
+
+  
+  // const isSaved = movie.owner ? true :  false;
+
+  // function getIsSaved() {
+  //   return movie.owner === currentUser._id ? true :  false;
+  // }
+
+    // Если id хотя бя какого-либо фильма совпадает с сохраненным фильмом
+    // устанавливаем isSaved на true для отображения нужного состояния иконки лайка
+    // if(location === 'movies') {
+    //   const isSaved = savedMovies.filter((item) => item.movieId === (movie.movieId || movie.id) ).length > 0 ?
+    //   true : false;
+    // } else {
+    //   const isSaved = savedMovies.filter((item) => item.movieId === (movie.movieId || movie.id) ).length > 0 ?
+    //   true : false;
+    // }
+  
+    // const isSaved = movies.filter((item) => item.movieId === (movie.movieId || movie.id) ).length > 0 ?
+    // true : false;
+
+  // const isSaved = movie.id ? false : true;
+
+  // useEffect(() => {
+  //   getIsSaved();
+  // }, [savedMovies]);
+
+  // const isSaved = movie.
+  console.log(`Is this movie saved? ${isSaved}`);
+  
 
   const onLike = () => {
+    // if (route === movies) {
+    //   han
+    // }
     console.log('A movie has been liked!');
     console.log(movie);
     handleSetLike(movie);
+    // setIsSaved(true)
   };
 
   const onDislike = () => {
-    handleRemoveLike(movie);
+    console.log('A movie has been disliked!');
+    if (route === '/movies') {
+      const movieToDelete = savedMovies.filter(m => m.movieId === movie.id);
+      console.log(movieToDelete);
+      handleRemoveLike(movieToDelete);
+    } else {
+      handleRemoveLike(movie);
+    }
+    
+    // setIsSaved(false)
   }
 
   const className = (
@@ -35,9 +103,10 @@ function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
     }
   }
 
-  const thumbnail = route === '/movies' ? 
-    `https://api.nomoreparties.co${movie.image.url}` :
-    `https://api.nomoreparties.co${movie.thumbnail}`;
+  // console.log(`saved movie image: ${JSON.stringify(movie.image)}`);
+  // console.log(`movie image: ${movie.image.url}`);
+
+  // const image = isSaved ? movie.image : `https://api.nomoreparties.co${movie.image.url}`;
 
   const transformDuration = () => {
     const duration = movie.duration;
@@ -45,6 +114,12 @@ function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
     const mins = duration - hours * 60; // оставшиеся минуты
     return`${hours > 0 ? hours + 'ч ' : ''}${mins > 0 ? mins + 'м' : ''}`;
   }
+
+  // const image = location === ''
+
+  // useEffect(() => {
+  //   getIsSaved();
+  // });
 
   return (
     <div className="card">
@@ -59,12 +134,12 @@ function MoviesCard({ movie, handleSetLike, handleRemoveLike }) {
         rel="noreferrer">
         <img
           className="card__image"
-          src={ thumbnail }
+          src={ route === '/movies' ? `https://api.nomoreparties.co${movie.image.url}` : movie.image }
           alt={ movie.nameRU } />
       </a>
       <button
         className={ className }
-        onClick={isSaved ? onDislike : onLike}>
+        onClick={isSaved === true ? onDislike : onLike}>
         { buttonSymbol() }
       </button>
     </div>

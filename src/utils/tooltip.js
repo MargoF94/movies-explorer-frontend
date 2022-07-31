@@ -17,7 +17,11 @@ export const saveSuccess = 'Фильм сохранен!';
 
 export const saveFail = 'Не удалось сохранить фильм. Попробуйте снова.';
 
+export const saveFailRepeat = 'Данный фильм уже сохранен!';
+
 export const removeFail = 'Что-то пошло не так...';
+
+export const removeSuccess = 'Фильм удален!';
 
 
 export const successIcon = success;
