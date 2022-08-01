@@ -40,7 +40,7 @@ function App() {
 
   // Обработка регистрации
 
-  function handleRegister (name, email, password) {
+  function handleRegister (email, password, name) {
     MainApi.register(email, password, name)
       .then((res) => {
         if (res.ok) {

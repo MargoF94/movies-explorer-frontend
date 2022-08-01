@@ -33,7 +33,7 @@ function Register({ handleRegister }) {
   function onRegister(e) {
   e.preventDefault();
 
-  handleRegister(values.name, values.email, values.password);
+  handleRegister(values.email, values.password, values.name);
   }
 
   console.info(`In Register ${JSON.stringify(errors)}`);
