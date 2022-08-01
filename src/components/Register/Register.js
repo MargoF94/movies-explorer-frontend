@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import './Register.css';
 import { FormValidation } from '../../utils/validation.js';
@@ -31,9 +31,9 @@ function Register({ handleRegister }) {
   const { values, handleChange, errors, isValid } = FormValidation();
 
   function onRegister(e) {
-  e.preventDefaul();
+  e.preventDefault();
 
-  handleRegister(values.email, values.password, values.name);
+  handleRegister(values.name, values.email, values.password);
   }
 
   console.info(`In Register ${JSON.stringify(errors)}`);

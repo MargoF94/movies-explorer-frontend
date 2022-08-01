@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import './SearchForm.css';
 
-function SearchForm({ movies, savedMovieSearchResult, onSearch, onSavedSearch, handleCheckboxToggle, isShortMovieChecked }) {
+function SearchForm({ onSearch, onSavedSearch, handleCheckboxToggle, isShortMovieChecked }) {
 
   const [searchWord, setSearchWord] = useState('');
 

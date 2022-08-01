@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import './MoviesCard.css';
 import saved from '../../images/icon_saved.svg';
 import unsaved from '../../images/unsave-icon.svg';
-// import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useLocation } from "react-router";
 
-function MoviesCard({ movie, movies, savedMovies, handleSetLike, handleRemoveLike }) {
+function MoviesCard({ movie, savedMovies, handleSetLike, handleRemoveLike }) {
 
-  // const currentUser = useContext(CurrentUserContext);
   const route = useLocation().pathname;
   let isSaved;
 
@@ -18,62 +16,20 @@ function MoviesCard({ movie, movies, savedMovies, handleSetLike, handleRemoveLik
       // задать значение isSaved - true
       // если нет - false
 
-      // console.log(savedMovies);
       const isMovieSaved = savedMovies.filter(item => item.movieId === movie.id);
-      // console.log(isMovieSaved);
       isSaved = isMovieSaved.length > 0 ? true : false;
-      // console.log(isSaved)
     } else if (route === '/saved-movies') {
       isSaved = true;
       }
     }
 
     getIsSaved();
-  // const [isSaved, setIsSaved] = useState(() => {
-  //   getIsSaved();
-  // });
-
-  // console.log(movie.image.url, isSaved);
-  // console.log(movie.image, isSaved);
-
-  
-  // const isSaved = movie.owner ? true :  false;
-
-  // function getIsSaved() {
-  //   return movie.owner === currentUser._id ? true :  false;
-  // }
-
-    // Если id хотя бя какого-либо фильма совпадает с сохраненным фильмом
-    // устанавливаем isSaved на true для отображения нужного состояния иконки лайка
-    // if(location === 'movies') {
-    //   const isSaved = savedMovies.filter((item) => item.movieId === (movie.movieId || movie.id) ).length > 0 ?
-    //   true : false;
-    // } else {
-    //   const isSaved = savedMovies.filter((item) => item.movieId === (movie.movieId || movie.id) ).length > 0 ?
-    //   true : false;
-    // }
-  
-    // const isSaved = movies.filter((item) => item.movieId === (movie.movieId || movie.id) ).length > 0 ?
-    // true : false;
-
-  // const isSaved = movie.id ? false : true;
-
-  // useEffect(() => {
-  //   getIsSaved();
-  // }, [savedMovies]);
-
-  // const isSaved = movie.
-  // console.log(`Is this movie saved? ${isSaved}`);
-  
 
   const onLike = () => {
-    // if (route === movies) {
-    //   han
-    // }
+
     console.log('A movie has been liked!');
     console.log(movie);
     handleSetLike(movie);
-    // setIsSaved(true)
   };
 
   const onDislike = () => {
@@ -86,8 +42,6 @@ function MoviesCard({ movie, movies, savedMovies, handleSetLike, handleRemoveLik
     } else {
       handleRemoveLike(movie);
     }
-    
-    // setIsSaved(false)
   }
 
   const className = (
@@ -104,23 +58,12 @@ function MoviesCard({ movie, movies, savedMovies, handleSetLike, handleRemoveLik
     }
   }
 
-  // console.log(`saved movie image: ${JSON.stringify(movie.image)}`);
-  // console.log(`movie image: ${movie.image.url}`);
-
-  // const image = isSaved ? movie.image : `https://api.nomoreparties.co${movie.image.url}`;
-
   const transformDuration = () => {
     const duration = movie.duration;
     const hours = Math.floor(duration / 60); // часы
     const mins = duration - hours * 60; // оставшиеся минуты
     return`${hours > 0 ? hours + 'ч ' : ''}${mins > 0 ? mins + 'м' : ''}`;
   }
-
-  // const image = location === ''
-
-  // useEffect(() => {
-  //   getIsSaved();
-  // });
 
   return (
     <div className="card">

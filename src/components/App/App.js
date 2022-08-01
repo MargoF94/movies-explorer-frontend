@@ -35,12 +35,8 @@ function App() {
 
   // ЛОКАЛЬНОЕ ХРАНИЛИЩЕ
 
-  // Фильмы, полученные после фильтрации
-  // const searchResultLocalStorage = JSON.parse(localStorage.getItem('searchResults'));
   // Текст запроса
   const searchWordLocalStorage = localStorage.getItem('searchWord');
-  // Состояние переключателя
-  const filterState = localStorage.getItem('filterState');
 
   // Обработка регистрации
 
@@ -50,7 +46,7 @@ function App() {
         if (res.ok) {
           history.push('/signin');
           setInfoToolTipInfo({
-            mesage: tooltip.registrationSuccess,
+            message: tooltip.registrationSuccess,
             image: tooltip.successIcon
           });
         } else {
@@ -99,8 +95,6 @@ function App() {
         setCurrentUser({
           _id: id,
         });
-        // setIsLoggedIn(true);
-        // history.push('/movies');
         setInfoToolTipInfo({
           message: tooltip.loginSuccess,
           image: tooltip.successIcon
@@ -161,11 +155,7 @@ function App() {
 
   function handleSetLike(movie) {
 
-    console.log(`IN SRT LIKE: movie: ${movie}`);
-
     const isSaved = savedMovies.find((savedMovie) => savedMovie.movieId  === movie.movieId);
-
-    console.log(`IN SET LIKE ISSAVED: ${isSaved}`);
 
     if(isSaved === undefined) {
       MainApi.createLocalCard(movie)
@@ -198,10 +188,8 @@ function App() {
     } 
   }
 
-  // не подставляется id с главной страницы
-
   function handleRemoveLike (movie) {
-    console.log(`In App handleRemoveLike movie: id: ${movie.movieId}`);
+    // console.log(`In App handleRemoveLike movie: id: ${movie.movieId}`);
     MainApi.deleteLocalMovie(movie.movieId)
       .then(() => {
         setSavedMovies((savedMovies) => savedMovies.filter((m) => m.movieId !== movie.movieId));
@@ -228,10 +216,10 @@ function App() {
 
   function toggleCheckBox() {
     const filter = JSON.parse(localStorage.getItem('filterState'));
-    setIsShortMovieChecked(!filter);
     localStorage.setItem('filterState', !filter);
-    console.log(`FILTER STATE (LOCAL) ON TOGGLE IS ${localStorage.getItem('filterState')}`);
-    console.log(`FILTER STATE (STATE) ON TOGGLE IS ${isShortMovieChecked}`);
+    setIsShortMovieChecked(!filter);
+    // console.log(`FILTER STATE (LOCAL) ON TOGGLE IS ${localStorage.getItem('filterState')}`);
+    // console.log(`FILTER STATE (STATE) ON TOGGLE IS ${isShortMovieChecked}`);
   }
 
   // Функция по фильтрации массивов с фильмами по ключевому слову
@@ -253,24 +241,17 @@ function App() {
   function handleSearchRequest(word) {
     setIsLoading(true);
 
-    console.log(`IN SEARCH: WORD ${word}`)
-    console.log(`IN SEARCH: MOVIES ${movies}`)
-    console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
-    console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
+    // console.log(`IN SEARCH: WORD ${word}`)
+    // console.log(`IN SEARCH: MOVIES ${movies}`)
+    // console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
+    // console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
 
     setTimeout(() => {
-      // Достаем состояние переключателя из локального хранилища
-      // Проверяем все фильмы
-      // Проверяем сохраненные фильмы
-      // const isFilterOn = localStorage.getItem('filterState');
-      // console.log(`FILTER STATE ON SEARCH IS ${isFilterOn}`);
-      // const moviesToFilter = location.pathname === '/movies' ? movies : savedMovies;
-
-      console.log(`IN SEARCH: MOVIES TO FILTER ${movies}`);
+      
+      // console.log(`IN SEARCH: MOVIES TO FILTER ${movies}`);
 
       const movieList = filterBySearchWord(movies, word, isShortMovieChecked);
   
-
       // Сравниваем два массива,
       // повторяющиеся фильмы берем с серверной стороны
       // const movieList = allFilteredMovies.map((movie) => {
@@ -280,7 +261,6 @@ function App() {
 
       // Если результатов нет - записываем в переменную пустой массив
       if(movieList !== null && movieList.length !== 0) {
-        console.log(`SAVING SEARCH RESULTS IN LOCAL STORAGE: ${movieList}`)
         localStorage.setItem('searchResults', JSON.stringify(movieList));
         setIsNoResuls(false);
       } else {
@@ -289,16 +269,15 @@ function App() {
       }
 
       setMovieSearchResult(movieList);
-      // setRender();
       setIsLoading(false);
     }, 1000);
   }
 
   function handleSearchRequestInSaved(word) {
     setIsLoading(true);
-    console.log(`IN SEARCH: WORD ${word}`)
-    console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
-    console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
+    // console.log(`IN SEARCH: WORD ${word}`)
+    // console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
+    // console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
 
     setTimeout(() => {
 
@@ -306,12 +285,9 @@ function App() {
 
       if(movieList !== null && movieList.length !== 0) {
         setIsNoResuls(false);
-        // localStorage.setItem('savedSearchResult', movieList);
       } else {
         setIsNoResuls(true);
       }
-
-      console.log(`SAVING SEARCH RESULTS IN STATE CONSTANT: ${movieList}`);
 
       setSavedMovieSearchResult(movieList);
       setAreSavedMoviesFiltered(true);
@@ -326,15 +302,11 @@ function App() {
 
   function tokenCheck () {
     const jwt = localStorage.getItem('jwt');
-    // const filter = localStorage.getItem('filterState');
-    // console.log(filter);
-    // const savedMoviesFromStorage = (localStorage.getItem('searchResults') !== null && isLoggedIn) ?
-    //   JSON.parse(localStorage.getItem('searchResults')) :
-    //   [];
-    console.log('ACTION 1 (tokenCheck)');
-    console.log(`Token in tokenCheck: ${jwt}`);
-    console.log(`777777777 Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
-    console.log(`22222 In getSearchResults: ${movieSearchResult}`);
+
+    // console.log('ACTION 1 (tokenCheck)');
+    // console.log(`Token in tokenCheck: ${jwt}`);
+    // console.log(`777777777 Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
+    // console.log(`22222 In getSearchResults: ${movieSearchResult}`);
 
     if (jwt) {
       MainApi.getContent(jwt)
@@ -344,14 +316,14 @@ function App() {
             setIsLoggedIn(true);
             setMovieSearchResult(getSearchResults);
             setIsShortMovieChecked(JSON.parse(localStorage.getItem('filterState')));
-            console.log(`isShortMovieChecked ${isShortMovieChecked}`)
+            // console.log(`isShortMovieChecked ${isShortMovieChecked}`)
             location.pathname === '/signin' ? 
               history.push('/movies') :
               history.push(location.pathname);
-            console.log(`Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
+            // console.log(`Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
 
-            console.log(`In tokenCheck: getContent currentUSer: ${currentUser}`);
-            console.log(`In tokenCheck: getContent response: ${JSON.stringify(user)}`);
+            // console.log(`In tokenCheck: getContent currentUSer: ${currentUser}`);
+            // console.log(`In tokenCheck: getContent response: ${JSON.stringify(user)}`);
           } else {
             localStorage.removeItem('jwt');
           }
@@ -385,15 +357,16 @@ function App() {
       ])
       .then(([allMovies, userSavedMovies]) => {
         // console.log('ACTION 3 (about to set movies and savedMovies)');
-        console.log(`In MainApi.getSavedMovies: allMovies: ${allMovies.length}`);
+        // console.log(`In MainApi.getSavedMovies: allMovies: ${allMovies.length}`);
         // console.log(`In MainApi.getSavedMovies: allMovies: ${JSON.stringify(allMovies)}`);
         // console.log(`In MainApi.getSavedMovies: allMovies: ${Array.isArray(allMovies)}`);
-        console.log(`In MainApi.getSavedMovies: savedMovies: ${userSavedMovies.length}`);
+        // console.log(`In MainApi.getSavedMovies: savedMovies: ${userSavedMovies.length}`);
         // console.log(`In MainApi.getSavedMovies: savedMovies: ${JSON.stringify(userSavedMovies)}`);
         // console.log(`In MainApi.getSavedMovies: savedMovies: ${Array.isArray(userSavedMovies)}`);
         setMovies(allMovies);
         if (userSavedMovies) {
-          setSavedMovies(userSavedMovies);
+          const filteredMovies = userSavedMovies.filter((m) => m.owner === currentUser._id);
+          setSavedMovies(filteredMovies !== undefined ? filteredMovies : []);
           // console.log(`In MainApi.getSavedMovies: savedMovies: ${savedMovies}`);
         } else {
           setSavedMovies([]);
@@ -408,14 +381,10 @@ function App() {
   // Проверяем токен при передвижению по сайту
   // Перезаписываем отфильтрованные фильмы в переменную состояния
   // из локального хранилища
+
   useEffect(() => {
-    // console.log(`8888888888 isLoggedIn ${isLoggedIn}`);
     tokenCheck();
   }, []);
-
-  // useEffect(() => {
-  //   setRender();
-  // }, [isLoggedIn, savedMovies]);
 
   
   return (

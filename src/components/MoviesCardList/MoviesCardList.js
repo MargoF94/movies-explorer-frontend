@@ -9,7 +9,6 @@ function MoviesList({
   handleSetLike,
   handleRemoveLike,
   isNoResults,
-  isLoggedIn
   }) {
 
   const getMoviesToDisplay = () => {
