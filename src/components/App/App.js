@@ -227,7 +227,7 @@ function App() {
 
   function filterBySearchWord(list, word, isShortOn) {
     if (list.length > 0) {
-      if (!isShortOn) {
+      if (isShortOn) {
         return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
       } else {
         return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
