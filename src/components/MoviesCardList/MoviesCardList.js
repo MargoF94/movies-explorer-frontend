@@ -8,14 +8,9 @@ function MoviesList({
   savedMovies,
   handleSetLike,
   handleRemoveLike,
-  setRender,
   isNoResults,
   isLoggedIn
   }) {
-
-  // console.log(`isNoResults? ${isNoResults}`);
-
-  // console.log(Array.isArray(movies));
 
   const getMoviesToDisplay = () => {
     const windowWidth = window.innerWidth;
@@ -30,8 +25,8 @@ function MoviesList({
 
   // Кол-во отрендереных фильмов по умолчанию
   const [count, setCount] = useState(getMoviesToDisplay);
-  const location = useLocation().pathname;
-  console.log(location);
+  const route = useLocation().pathname;
+  console.log(route);
 
   const addMoreMovies = () => {
     const windowWidth = window.innerWidth;
@@ -46,13 +41,9 @@ function MoviesList({
   const displayedMovies = movies.slice(0, count);
 
   useEffect(() => {
-    window.addEventListener('resize', getMoviesToDisplay)
+    window.addEventListener('resize', getMoviesToDisplay);
+    console.log(movies); 
   }, []);
-
-  // useEffect(() => {
-  //   console.info(localStorage.getItem('searchResults'));
-  //   setRender();
-  // }, []);
 
   return (
     <div className="movies-list">
@@ -73,7 +64,7 @@ function MoviesList({
       </div>
 
       <button 
-        className={`movies-list__button-more ${count >= movies.length && 'movies-list__button-more_disabled'} ${location === '/saved-movies' && 'movies-list__button-more_invisible'}`}
+        className={`movies-list__button-more ${count >= movies.length && 'movies-list__button-more_disabled'} ${route === '/saved-movies' && 'movies-list__button-more_invisible'}`}
         onClick={addMoreMovies}
         disabled={count >= movies.length}>
         Ещё

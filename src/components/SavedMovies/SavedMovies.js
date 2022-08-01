@@ -7,9 +7,11 @@ import './SavedMovies.css';
 
 function SavedMovies({ 
   movies,
-  moviesToRender,
+  savedMovieSearchResult,
+  areSavedMoviesFiltered,
   handleRemoveLike,
   onSearch,
+  onSavedSearch,
   handleCheckboxToggle,
   setRender,
   isLoggedIn,
@@ -22,13 +24,14 @@ function SavedMovies({
     <div className="movies">
       <Header isLoggedIn={isLoggedIn} />
       <SearchForm
-        moviesToRender={moviesToRender}
         onSearch={onSearch}
+        onSavedSearch={onSavedSearch}
         handleCheckboxToggle={handleCheckboxToggle}
         isShortMovieChecked={isShortMovieChecked} />
       <MoviesCardList
           movies={movies}
-          moviesToRender={moviesToRender}
+          savedMovieSearchResult={savedMovieSearchResult}
+          areSavedMoviesFiltered={areSavedMoviesFiltered}
           handleRemoveLike={handleRemoveLike}
           setRender={setRender}
           isLoggedIn={isLoggedIn}

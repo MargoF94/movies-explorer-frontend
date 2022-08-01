@@ -63,7 +63,7 @@ function MoviesCard({ movie, movies, savedMovies, handleSetLike, handleRemoveLik
   // }, [savedMovies]);
 
   // const isSaved = movie.
-  console.log(`Is this movie saved? ${isSaved}`);
+  // console.log(`Is this movie saved? ${isSaved}`);
   
 
   const onLike = () => {
@@ -79,8 +79,9 @@ function MoviesCard({ movie, movies, savedMovies, handleSetLike, handleRemoveLik
   const onDislike = () => {
     console.log('A movie has been disliked!');
     if (route === '/movies') {
-      const movieToDelete = savedMovies.filter(m => m.movieId === movie.id);
+      const movieToDelete = savedMovies.find(m => m.movieId === movie.id);
       console.log(movieToDelete);
+      console.log(movieToDelete.movieId);
       handleRemoveLike(movieToDelete);
     } else {
       handleRemoveLike(movie);
