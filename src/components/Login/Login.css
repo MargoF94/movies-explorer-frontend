@@ -9,9 +9,12 @@
   font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
+.login__logo-link {
+  align-self: flex-start;
+}
+
 .login__logo {
   width: 38px;
-  align-self: flex-start;
   transition: transform .2s;
 }
 

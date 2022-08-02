@@ -5,9 +5,11 @@ import './SearchForm.css';
 
 function SearchForm({ onSearch, onSavedSearch, handleCheckboxToggle, isShortMovieChecked }) {
 
-  const [searchWord, setSearchWord] = useState('');
-
   const route = useLocation().pathname;
+  const [searchWord, setSearchWord] = useState('');
+  const filterState = route === '/movies' ? 
+    JSON.parse(localStorage.getItem('filterState')) : 
+    JSON.parse(localStorage.getItem('filterStateInSaved'));
 
   function handleSearch(e) {
     e.preventDefault();
@@ -15,13 +17,10 @@ function SearchForm({ onSearch, onSavedSearch, handleCheckboxToggle, isShortMovi
     if (route === '/movies') {
       localStorage.setItem('searchWord', searchWord);
       console.log(`In searchForm: word: ${searchWord}`);
-      onSearch(searchWord);
+      onSearch(searchWord, filterState);
     } else if (route === '/saved-movies') {
-      // При монтировании возвращении на страницу сохраненных фильмов
-      // список отфильтрованных фильмов возвращается к пустому массиву.
-      // А если массив отфильтрованных фильмов пустой - 
-      // отображаем все сохраненные фильмы
-      onSavedSearch(searchWord);
+      localStorage.setItem('searchWordInSaved', searchWord);
+      onSavedSearch(searchWord, filterState);
     }
     
   }
@@ -40,6 +39,10 @@ function SearchForm({ onSearch, onSavedSearch, handleCheckboxToggle, isShortMovi
     route === '/movies' ? 
       setSearchWord(localStorage.getItem('searchWord')) :
       setSearchWord('');
+
+    return () => {
+      localStorage.setItem('searchWordInSaved', '');
+    }
   }, []);
 
   return (

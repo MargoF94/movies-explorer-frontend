@@ -58,7 +58,7 @@ function MoviesCard({ movie, savedMovies, handleSetLike, handleRemoveLike }) {
     }
   }
 
-  const transformDuration = () => {
+  const formatMovieDuration = () => {
     const duration = movie.duration;
     const hours = Math.floor(duration / 60); // часы
     const mins = duration - hours * 60; // оставшиеся минуты
@@ -69,7 +69,7 @@ function MoviesCard({ movie, savedMovies, handleSetLike, handleRemoveLike }) {
     <div className="card">
       <div className="card__info">
         <h3 className="card__title">{ movie.nameRU }</h3>
-        <span className="card__duration">{ transformDuration() }</span>
+        <span className="card__duration">{ formatMovieDuration() }</span>
       </div>
       <a
         className="card__image-link"

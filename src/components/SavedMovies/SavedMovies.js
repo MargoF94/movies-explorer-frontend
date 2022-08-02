@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -7,7 +7,9 @@ import './SavedMovies.css';
 
 function SavedMovies({ 
   movies,
+  savedMovies,
   savedMovieSearchResult,
+  setSavedMovieSearchResult,
   areSavedMoviesFiltered,
   handleRemoveLike,
   onSearch,
@@ -16,9 +18,8 @@ function SavedMovies({
   setRender,
   isLoggedIn,
   isShortMovieChecked,
-  isNoResults }) {
-  
-    console.log(`In '/saved-movies' savedMovies: ${movies}`);
+  isNoResults,
+  resetAreSavedMoviesFiltered }) {
 
   return (
     <div className="movies">
@@ -30,12 +31,14 @@ function SavedMovies({
         isShortMovieChecked={isShortMovieChecked} />
       <MoviesCardList
           movies={movies}
+          savedMovies={savedMovies}
           savedMovieSearchResult={savedMovieSearchResult}
           areSavedMoviesFiltered={areSavedMoviesFiltered}
           handleRemoveLike={handleRemoveLike}
           setRender={setRender}
           isLoggedIn={isLoggedIn}
-          isNoResults={isNoResults} />
+          isNoResults={isNoResults}
+          resetAreSavedMoviesFiltered={resetAreSavedMoviesFiltered} />
       <Footer />
     </div>
   )

@@ -6,29 +6,7 @@ import logo from '../../images/logo-big.svg';
 
 function Register({ handleRegister }) {
 
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [name, setName] = useState('');
-
-  // function handleEmailChange(e) {
-  //   setEmail(e.target.value);
-  // }
-
-  // function handlePasswordChange(e) {
-  //   setPassword(e.target.value);
-  // }
-
-  // function handleNameChange(e) {
-  //   setName(e.target.value);
-  // }
-
-  // function onRegister(e) {
-  //   e.preventDefaul();
-
-  //   handleRegister(name, email, password);
-  // }
-
-  const { values, handleChange, errors, isValid } = FormValidation();
+  const { values, handleChange, errors, isValid, isValidEmail } = FormValidation();
 
   function onRegister(e) {
   e.preventDefault();
@@ -36,13 +14,16 @@ function Register({ handleRegister }) {
   handleRegister(values.email, values.password, values.name);
   }
 
-  console.info(`In Register ${JSON.stringify(errors)}`);
-  console.info(`In Register ${JSON.stringify(values)}`);
-
   return (
     <div className="register">
-      <img
-        src={logo} alt="Лого" className="register__logo" />
+      <Link
+        to="/"
+        className="register__logo-link" >
+        <img
+          src={logo}
+          alt="Лого страницы"
+          className="register__logo" />
+      </Link>
       <h2 className='register__title'>Добро пожаловать!</h2>
       <form 
         className='form register__form'
@@ -79,6 +60,7 @@ function Register({ handleRegister }) {
           type="email"
           id="form__register-email"
           name="email"
+          pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2,})\b"
           onChange={handleChange}
           value={values.email || ''}
           required />

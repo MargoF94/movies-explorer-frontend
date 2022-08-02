@@ -5,6 +5,10 @@ export function FormValidation() {
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
+  const isValidEmail = (email) => {
+    return /\S+@\S+\.\S+/.test(email);
+  }
+
   const handleChange = (event) => {
     const target = event.target;
     const name = target.name;
@@ -12,6 +16,10 @@ export function FormValidation() {
     setValues({...values, [name]: value});
     setErrors({...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
+
+    if (!isValidEmail) {
+      
+    }
   };
 
   // const resetForm = useCallback(
@@ -23,5 +31,5 @@ export function FormValidation() {
   //   [setValues, setErrors, setIsValid]
   // );
 
-  return { values, handleChange, errors, isValid, setValues };
+  return { values, handleChange, errors, isValid, setValues, isValidEmail };
 }

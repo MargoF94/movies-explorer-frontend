@@ -18,10 +18,14 @@ function Login({ handleLogin }) {
 
   return (
     <div className="login">
-      <img
-        src={logo}
-        alt="Лого страницы"
-        className="login__logo" />
+      <Link
+        to="/"
+        className="login__logo-link" >
+        <img
+          src={logo}
+          alt="Лого страницы"
+          className="login__logo" />
+      </Link>
       <h2 className='login__title'>Рады видеть!</h2>
       <form 
         className='form login__form'
@@ -38,6 +42,7 @@ function Login({ handleLogin }) {
           type="email"
           id="form__login-email"
           name="email"
+          pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2,})\b"
           onChange={handleChange}
           value={values.email || ""}
           required />

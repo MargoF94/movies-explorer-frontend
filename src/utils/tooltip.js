@@ -13,6 +13,8 @@ export const updateSuccess = 'Профиль Обновлен!';
 
 export const updateFail = 'Неудалось обновить профиль. Попробуйте снова.';
 
+export const updateFailRepeat = 'Данные не изменены.';
+
 export const saveSuccess = 'Фильм сохранен!';
 
 export const saveFail = 'Не удалось сохранить фильм. Попробуйте снова.';

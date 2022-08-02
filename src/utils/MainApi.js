@@ -1,5 +1,5 @@
-// export const mainApiUrl = 'http://localhost:3000';
-export const mainApiUrl = 'https://localmovieexplorer.nomoredomains.xyz';
+export const mainApiUrl = 'http://localhost:3000';
+// export const mainApiUrl = 'https://localmovieexplorer.nomoredomains.xyz';
 
 const checkResponse = (res) => {
   if (res.ok) {

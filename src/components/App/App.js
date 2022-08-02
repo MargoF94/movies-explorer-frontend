@@ -44,11 +44,12 @@ function App() {
     MainApi.register(email, password, name)
       .then((res) => {
         if (res.ok) {
-          history.push('/signin');
+          // history.push('/movies');
           setInfoToolTipInfo({
             message: tooltip.registrationSuccess,
             image: tooltip.successIcon
           });
+          handleLogin(email, password);
         } else {
           setInfoToolTipInfo({
             message: tooltip.registrationFail,
@@ -56,6 +57,9 @@ function App() {
           })
         }
       })
+      // .then(() => {
+      //   handleLogin(email, password);
+      // })
       .catch((err) => {
         console.log(err);
         setInfoToolTipInfo({
@@ -83,9 +87,11 @@ function App() {
         if(!data.jwt) {
           throw new Error('Произошла ошибка (авторизации на фронте)');
         }
+        setIsLoggedIn(true);
         localStorage.setItem('jwt', data.jwt);
         localStorage.setItem('searchResults', []);
         localStorage.setItem('filterState', false);
+        localStorage.setItem('filterStateInSaved', false);
         localStorage.setItem('searchWord', '');
         localStorage.setItem('searchWordInSaved', '');
         return data._id;
@@ -98,7 +104,8 @@ function App() {
         setInfoToolTipInfo({
           message: tooltip.loginSuccess,
           image: tooltip.successIcon
-        })
+        });
+        history.push('/movies');
       })
       .catch((err) => {
         console.log(err);
@@ -116,6 +123,15 @@ function App() {
   // Обработка обновления профиля
 
   function handleEditProfileSubmit (name, email) {
+    if (name === currentUser.name && email === currentUser.email) {
+      setInfoToolTipInfo({
+        message: tooltip.updateFailRepeat,
+        image: tooltip.failIcon
+      });
+      setIsInfoToolTipOpen(true);
+      return;
+      // throw new Error('Данные не изменены');
+    }
     MainApi.editProfile(name, email)
       .then((data) => {
         setCurrentUser(data);
@@ -123,16 +139,17 @@ function App() {
           message: tooltip.updateSuccess,
           image: tooltip.successIcon
         })
+        // setIsInfoToolTipOpen(true);
       })
       .catch((err) => {
         console.log(err);
         setInfoToolTipInfo({
           message: tooltip.updateFail,
           image: tooltip.failIcon
-        })
+        });
       })
       .finally(() => {
-        setIsInfoToolTipOpen(true)
+        setIsInfoToolTipOpen(true);
       });
   }
 
@@ -142,8 +159,12 @@ function App() {
     localStorage.removeItem('searchWord');
     localStorage.removeItem('searchWordInSaved');
     localStorage.removeItem('filterState');
+    localStorage.removeItem('filterStateInSaved');
     setIsLoggedIn(false);
-    history.push('/signin');
+    setCurrentUser({});
+    setMovies([]);
+    setSavedMovies([]);
+    history.push('/');
   }
 
   function closePopups () {
@@ -227,7 +248,7 @@ function App() {
 
   function filterBySearchWord(list, word, isShortOn) {
     if (list.length > 0) {
-      if (isShortOn) {
+      if (isShortOn === true) {
         return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
       } else {
         return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
@@ -238,28 +259,15 @@ function App() {
   }
 
 
-  function handleSearchRequest(word) {
+  function handleSearchRequest(word, filterState) {
     setIsLoading(true);
 
-    // console.log(`IN SEARCH: WORD ${word}`)
-    // console.log(`IN SEARCH: MOVIES ${movies}`)
-    // console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
-    // console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
+    // console.log(`IN SEARCH HANDLER: ${JSON.parse(localStorage.getItem('filterState'))}`);
 
     setTimeout(() => {
-      
-      // console.log(`IN SEARCH: MOVIES TO FILTER ${movies}`);
 
-      const movieList = filterBySearchWord(movies, word, isShortMovieChecked);
-  
-      // Сравниваем два массива,
-      // повторяющиеся фильмы берем с серверной стороны
-      // const movieList = allFilteredMovies.map((movie) => {
-      //   const savedMovie = allSavedMovies.find((savedM) => savedM.movieId === movie.id);
-      //   return savedMovie ?? movie;
-      // })
+      const movieList = filterBySearchWord(movies, word, filterState);
 
-      // Если результатов нет - записываем в переменную пустой массив
       if(movieList !== null && movieList.length !== 0) {
         localStorage.setItem('searchResults', JSON.stringify(movieList));
         setIsNoResuls(false);
@@ -268,20 +276,19 @@ function App() {
         setIsNoResuls(true);
       }
 
+      localStorage.setItem('filterState', filterState);
+      localStorage.setItem('searchWord', word);
       setMovieSearchResult(movieList);
       setIsLoading(false);
     }, 1000);
   }
 
-  function handleSearchRequestInSaved(word) {
+  function handleSearchRequestInSaved(word, filterState) {
     setIsLoading(true);
-    // console.log(`IN SEARCH: WORD ${word}`)
-    // console.log(`IN SEARCH: SAVED MOVIES ${savedMovies}`);
-    // console.log(`isShortMovieChecked: ${isShortMovieChecked}`);
 
     setTimeout(() => {
-
-      const movieList = filterBySearchWord(savedMovies, word, isShortMovieChecked);
+      console.log(`In filterinf saved movies: ${filterState}`);
+      const movieList = filterBySearchWord(savedMovies, word, filterState);
 
       if(movieList !== null && movieList.length !== 0) {
         setIsNoResuls(false);
@@ -289,10 +296,15 @@ function App() {
         setIsNoResuls(true);
       }
 
+      localStorage.setItem('filterStateInSaved', filterState);
       setSavedMovieSearchResult(movieList);
       setAreSavedMoviesFiltered(true);
       setIsLoading(false);
     }, 1000);
+  }
+
+  function resetAreSavedMoviesFiltered () {
+    setAreSavedMoviesFiltered(false);
   }
 
   // Проверяем наличие токена в локальном хранилище
@@ -317,9 +329,13 @@ function App() {
             setMovieSearchResult(getSearchResults);
             setIsShortMovieChecked(JSON.parse(localStorage.getItem('filterState')));
             // console.log(`isShortMovieChecked ${isShortMovieChecked}`)
-            location.pathname === '/signin' ? 
-              history.push('/movies') :
+            if (location.pathname === '/signin') {
+              history.push('/movies');
+            } else if (location.pathname === '/signup') {
+              history.push('/movies');
+            } else {
               history.push(location.pathname);
+            }            
             // console.log(`Token in tokenCheck: idLoggedIn ${isLoggedIn}`);
 
             // console.log(`In tokenCheck: getContent currentUSer: ${currentUser}`);
@@ -385,7 +401,6 @@ function App() {
   useEffect(() => {
     tokenCheck();
   }, []);
-
   
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -415,6 +430,7 @@ function App() {
             path="/saved-movies"
             component={SavedMovies}
             movies={areSavedMoviesFiltered ? savedMovieSearchResult : savedMovies}
+            savedMovies={savedMovies}
             savedMovieSearchResult={savedMovieSearchResult}
             areSavedMoviesFiltered={areSavedMoviesFiltered}
             handleRemoveLike={handleRemoveLike}
@@ -423,7 +439,8 @@ function App() {
             handleCheckboxToggle={toggleCheckBox}
             isLoggedIn={isLoggedIn}
             isShortMovieChecked={isShortMovieChecked}
-            isNoResults={isNoResults} />
+            isNoResults={isNoResults}
+            resetAreSavedMoviesFiltered={resetAreSavedMoviesFiltered} />
 
           <ProtectedRoute
             path="/profile"

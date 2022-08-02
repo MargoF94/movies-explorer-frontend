@@ -29,11 +29,14 @@ function Profile({ onSubmit, onLogOut, isLoggedIn }) {
 
   function handleSubmit (e) {
     e.preventDefault();
+    // if (values.name === currentUser.name && values.email === currentUser.email) {
+    //   throw new Error('Данные не изменены');
+    // }
     onSubmit(values.name, values.email);
   }
 
   useEffect(() => {
-    setValues(currentUser)
+    setValues(currentUser);
   }, [])
 
   return (
