@@ -1,0 +1,8 @@
+.saved-movies {
+  display: grid;
+  padding: 70px calc((100% - 1280px) / 2 + 70px) 20px;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 28px;
+  column-gap: 32px;
+  justify-items: center;
+}
