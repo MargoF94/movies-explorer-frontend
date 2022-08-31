@@ -96,7 +96,7 @@ function Register({ handleRegister }) {
           type="submit"
           className={`register__button ${!isValid ? 'register__button_disabled' : ''}`}
           disabled={!isValid}>
-          Зарегистрироваться
+          Sign up
         </button>
 
         <span className="register__text">Already have an account?  <Link className="register__link" to="signin">Sign in</Link></span>
