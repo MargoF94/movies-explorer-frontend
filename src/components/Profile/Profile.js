@@ -55,7 +55,7 @@ function Profile({ onSubmit, onLogOut, isLoggedIn }) {
           <label 
             className="profile__label"
             htmlFor="profile__form-name">
-            Имя
+            Name
           </label>
           <input
             className="profile__input"
@@ -101,13 +101,13 @@ function Profile({ onSubmit, onLogOut, isLoggedIn }) {
           className={`profile_edit-button ${!isValid ? 'profile_edit-button_disabled' : ''}`}
           type="submit"
           disabled={!isValid} >
-          Редактировать
+          Edit profile
         </button>
         <button
           className="profile_logout-button"
           type="submit"
           onClick={onLogOut}>
-          Выйти из аккаунта
+          Sign out
         </button>
 
       </form>

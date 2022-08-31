@@ -9,12 +9,12 @@ function Promo() {
     <div className="promo">
       <div className="promo__wrapper">
         <div className="promo__content">
-          <h1 className="promo__title">Учебный проект студента факультета Веб&#8209;разработки.</h1>
-          <p className="promo__subtitle">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
+          <h1 className="promo__title">My web development graduation project</h1>
+          <p className="promo__subtitle">Scroll down to find out more about the project.</p>
         </div>
         <img src={landinglogo} alt="logo" className="promo__landing-logo" />
       </div>
-      <button className="promo__learn-more-button">Узнать больше</button>
+      <button className="promo__learn-more-button">Learn more</button>
     </div>
   )
 };

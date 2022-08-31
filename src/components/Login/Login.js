@@ -26,7 +26,7 @@ function Login({ handleLogin }) {
           alt="Лого страницы"
           className="login__logo" />
       </Link>
-      <h2 className='login__title'>Рады видеть!</h2>
+      <h2 className='login__title'>Hey there!</h2>
       <form 
         className='form login__form'
         name='login'
@@ -55,7 +55,7 @@ function Login({ handleLogin }) {
         <label
           htmlFor="form__login-password"
           className="login__label">
-            Пароль
+            Password
         </label>
         <input
           className={`login__input ${errors.password ? 'login__input_error' : ''}`}
@@ -79,7 +79,7 @@ function Login({ handleLogin }) {
         </button>
 
       </form>
-      <span className="login__text">Ещё не зарегистрированы?  <Link className="login__link" to="/signup">Регистрация</Link></span>
+      <span className="login__text">Don&#39;t have an account yet?  <Link className="login__link" to="/signup">Sign up</Link></span>
     </div>
   )
 }

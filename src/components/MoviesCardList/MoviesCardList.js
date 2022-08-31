@@ -64,7 +64,7 @@ function MoviesList({
 
   return (
     <div className="movies-list">
-      { isNoResults && <p className="movies-list__not-found">Ничего не найдено</p> }
+      { isNoResults && <p className="movies-list__not-found">Nothing found</p> }
       <div className="movies-list__container">
         {
           moviesToRender.length > 0 &&
@@ -83,7 +83,7 @@ function MoviesList({
       <button 
         className={`movies-list__button-more ${count >= movies.length && 'movies-list__button-more_disabled'} ${route === '/saved-movies' && 'movies-list__button-more_invisible'} ${ moviesToRender.length === 0 && 'movies-list__button-more_invisible'} ${count >= movies.length && 'movies-list__button-more_invisible'}`}
         onClick={addMoreMoviesOnClick}>
-        Ещё
+        More
       </button>
     </div>
     

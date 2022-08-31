@@ -1,29 +1,29 @@
 import success from '../images/popup-success.svg';
 import fail from '../images/popup-fail.svg'
 
-export const registrationSuccess = 'Вы успешно зарегестрировались!';
+export const registrationSuccess = 'You signed up!';
 
-export const registrationFail = 'Что-то пошло не так...';
+export const registrationFail = 'Oops! Something went wrong...';
 
-export const loginSuccess = 'Добро пожаловать!';
+export const loginSuccess = 'Welcome!';
 
-export const loginFail = 'Что-то пошло не так...';
+export const loginFail = 'Oops! Something went wrong...';
 
-export const updateSuccess = 'Профиль Обновлен!';
+export const updateSuccess = 'Your profile is edited!';
 
-export const updateFail = 'Неудалось обновить профиль. Попробуйте снова.';
+export const updateFail = 'Failed to edit your profile. Please try again.';
 
-export const updateFailRepeat = 'Данные не изменены.';
+export const updateFailRepeat = 'Profile is not updated.';
 
-export const saveSuccess = 'Фильм сохранен!';
+export const saveSuccess = 'Saved this movie';
 
-export const saveFail = 'Не удалось сохранить фильм. Попробуйте снова.';
+export const saveFail = 'Failed to save this movie. Please try again.';
 
-export const saveFailRepeat = 'Данный фильм уже сохранен!';
+export const saveFailRepeat = 'This movie is already saved!';
 
-export const removeFail = 'Что-то пошло не так...';
+export const removeFail = 'Oops! Something went wrong...';
 
-export const removeSuccess = 'Фильм удален!';
+export const removeSuccess = 'Deleted this movie!';
 
 
 export const successIcon = success;

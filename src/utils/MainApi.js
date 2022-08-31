@@ -5,7 +5,7 @@ const checkResponse = (res) => {
   if (res.ok) {
     return res.json()
   }
-  return Promise.reject(`Ошибка ${res.status}`);
+  return Promise.reject(`Erroe ${res.status}`);
 }
 
 //// ПОЛЬЗОВАТЕЛЬСКОЕ ////
@@ -22,7 +22,6 @@ export const login = (email, password) => {
   })
   .then((data) => {
     if (data) {
-      console.log(`Response data from api after successful login: ${data}`);
       localStorage.setItem('jwt', data.jwt);
       return data.json();
     }
@@ -53,7 +52,6 @@ export const getContent = (jwt) => {
     },
   })
   .then((res) => {
-    console.log(`In auth.getContent: response: ${res}`);
     return res.json();
   })
 }
@@ -83,7 +81,6 @@ export const editProfile = ( name, email ) => {
 // Сохраняем пришедший с API фильм локально
 
 export const createLocalCard = (movie) => {
-  console.log(`IN SAVE API MOVIE: ${JSON.stringify(movie.image.url)}`);
   return fetch(`${mainApiUrl}/api/movies`, {
     method: 'POST',
     headers: {
