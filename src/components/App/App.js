@@ -247,13 +247,11 @@ function App() {
   // и длительности
 
   function filterBySearchWord(list, word, isShortOn) {
-    console.log(list[76]['nameEN']);
-    console.log(word.toLowerCase());
     if (list.length > 0) {
       if (isShortOn === true) {
-        return list.filter((movie) => movie.nameEN.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
+        return list.filter((movie) => movie.nameEN !== 'null' && movie.nameEN.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
       } else {
-        return list.filter((movie) => console.log(movie.nameEN + movie.nameEN.toLowerCase() + movie.nameRU));
+        return list.filter((movie) => movie.nameEN !== 'null' && movie.nameEN.toLowerCase().includes(word.toLowerCase()));
       }
     } else {
       return [];
