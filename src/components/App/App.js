@@ -247,10 +247,10 @@ function App() {
   // и длительности
 
   function filterBySearchWord(list, word, isShortOn) {
-    console.log(list);
+    console.log(list[76]['nameEN']);
     if (list.length > 0) {
       if (isShortOn === true) {
-        return list.filter((movie) => movie.nameEN.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
+        return list.filter((movie) => movie['nameEN'].toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
       } else {
         return list.filter((movie) => movie.nameEN.toLowerCase().includes(word.toLowerCase()));
       }
