@@ -247,6 +247,7 @@ function App() {
   // и длительности
 
   function filterBySearchWord(list, word, isShortOn) {
+    console.log(list);
     if (list.length > 0) {
       if (isShortOn === true) {
         return list.filter((movie) => movie.nameEN.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
@@ -380,6 +381,7 @@ function App() {
         // console.log(`In MainApi.getSavedMovies: savedMovies: ${JSON.stringify(userSavedMovies)}`);
         // console.log(`In MainApi.getSavedMovies: savedMovies: ${Array.isArray(userSavedMovies)}`);
         setMovies(allMovies);
+        console.log(allMovies);
         if (userSavedMovies) {
           const filteredMovies = userSavedMovies.filter((m) => m.owner === currentUser._id);
           setSavedMovies(filteredMovies !== undefined ? filteredMovies : []);

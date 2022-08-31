@@ -68,7 +68,7 @@ function MoviesCard({ movie, savedMovies, handleSetLike, handleRemoveLike }) {
   return (
     <div className="card">
       <div className="card__info">
-        <h3 className="card__title">{ movie.nameRU }</h3>
+        <h3 className="card__title">{ movie.nameEN }</h3>
         <span className="card__duration">{ formatMovieDuration() }</span>
       </div>
       <a
@@ -79,7 +79,7 @@ function MoviesCard({ movie, savedMovies, handleSetLike, handleRemoveLike }) {
         <img
           className="card__image"
           src={ route === '/movies' ? `https://api.nomoreparties.co${movie.image.url}` : movie.image }
-          alt={ movie.nameRU } />
+          alt={ movie.nameEN } />
       </a>
       <button
         className={ className }
