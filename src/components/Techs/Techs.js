@@ -7,7 +7,7 @@ function Techs() {
       <h2 className="techs__title">Technologies used</h2>
       <div className="techs__container">
         <h3 className="techs__subtitle">7 technologies</h3>
-        <p className="techs__description">This oriject was sreated using following technologies</p>
+        <p className="techs__description">This priject was sreated using following technologies</p>
         <ul className="techs__tools">
           <li className="techs__tools-item">HTML</li>
           <li className="techs__tools-item">CSS</li>

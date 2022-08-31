@@ -249,9 +249,9 @@ function App() {
   function filterBySearchWord(list, word, isShortOn) {
     if (list.length > 0) {
       if (isShortOn === true) {
-        return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
+        return list.filter((movie) => movie.nameEN.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
       } else {
-        return list.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
+        return list.filter((movie) => movie.nameEN.toLowerCase().includes(word.toLowerCase()));
       }
     } else {
       return [];
