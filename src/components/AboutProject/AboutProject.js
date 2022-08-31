@@ -6,31 +6,31 @@ import './AboutProject.css';
 function AboutProject() {
   return (
     <div className="about-project">
-      <h2 className="about-project__title">О проекте</h2>
+      <h2 className="about-project__title">About this project</h2>
       <div className="about-project__content">
         <div className="about-project__column">
           <h3 className="about-project__subtitle">
-            Дипломный проект включал 5 этапов
+            This project was done in five stages
           </h3>
           <p className="about-project__text">
-            Составление плана, работу над бэкендом, вёрстку, добавление функциональности и финальные доработки.
+            Planning, setting up beckend, marking up, creating an interface with React and finishing touches.
           </p>
         </div>
         <div className="about-project__column">
           <h3 className="about-project__subtitle">
-            На выполнение диплома ушло 5 недель
+            This project was done in five weeks.
           </h3>
           <p className="about-project__text">
-            У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было соблюдать, чтобы успешно защититься.
+            Each stage had soft and hard deadlines.
           </p>
         </div>
       </div>
       <div className="about-project__scale about-project__grid">
         <p className="about-project__scale-item about-project__scale-item_color_green">
-          1 неделя
+          1 week
         </p>
         <p className="about-project__scale-item about-project__scale-item_color_gray">
-          4 недели
+          4 weeks
         </p>
       </div>
       <div className="about-project__scale-specifics about-project__grid">

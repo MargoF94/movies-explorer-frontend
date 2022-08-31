@@ -24,7 +24,7 @@ function Register({ handleRegister }) {
           alt="Лого страницы"
           className="register__logo" />
       </Link>
-      <h2 className='register__title'>Добро пожаловать!</h2>
+      <h2 className='register__title'>Welcome!</h2>
       <form 
         className='form register__form'
         name='register'
@@ -32,7 +32,7 @@ function Register({ handleRegister }) {
         <label
           htmlFor="form__register-name"
           className="register__label">
-            Имя
+            Name
         </label>
         <input
           className={`register__input ${errors.name ? 'register__input_error' : ''}`}
@@ -73,7 +73,7 @@ function Register({ handleRegister }) {
         <label
           htmlFor="form__register-password"
           className="register__label">
-            Пароль
+            Password
         </label>
         <input
           className={`register__input ${errors.password ? 'register__input_error' : ''}`}
@@ -99,7 +99,7 @@ function Register({ handleRegister }) {
           Зарегистрироваться
         </button>
 
-        <span className="register__text">Уже зарегистрированы?  <Link className="register__link" to="signin">Войти</Link></span>
+        <span className="register__text">Already have an account?  <Link className="register__link" to="signin">Sign in</Link></span>
 
       </form>
     </div>

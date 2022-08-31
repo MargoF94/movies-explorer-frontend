@@ -56,7 +56,7 @@ function SearchForm({ onSearch, onSavedSearch, handleCheckboxToggle, isShortMovi
           type="text"
           value={searchWord || ''}
           onChange={handleChange}
-          placeholder='Фильм'
+          placeholder='Movie'
           required />
         <button 
           className="search-form__button"

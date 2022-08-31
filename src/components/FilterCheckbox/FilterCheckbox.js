@@ -84,7 +84,7 @@ function FilterCheckbox({ onSearch, onSavedSearch, handleCheckboxToggle }) {
       <span className={`checkbox__new-check ${classNameBG}`} onClick={onToggle}>
         <span className={`checkbox__circle ${classNameCircle}`} />
       </span>
-      <span className="checkbox__description">Короткометражки</span>
+      <span className="checkbox__description">Short movies</span>
     </label>
   )
 }

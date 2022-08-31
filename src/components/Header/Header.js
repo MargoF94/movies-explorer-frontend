@@ -41,14 +41,14 @@ function Header({isLoggedIn}) {
               <Link
                 to="/movies"
                 className={`header__link ${ location.pathname === '/movies' ? 'header_active_bold' : '' }`}>
-                Фильмы
+                Movies
               </Link>
             </li>
             <li className="header__nav_item">
               <Link
                 to="/saved-movies"
                 className={`header__link ${ location.pathname === '/saved-movies' ? '.header_active_bold' : '' }`}>
-                Сохраненные фильмы
+                Saved movies
               </Link>
             </li>
           </ul>
@@ -56,7 +56,7 @@ function Header({isLoggedIn}) {
             to="/profile"
             className="header__link_profile">
             <span className="header__profile-icon"></span>
-            <span className="header__profile-text">Аккаунт</span>
+            <span className="header__profile-text">Profile</span>
           </Link>
         </div>
 
@@ -81,14 +81,14 @@ function Header({isLoggedIn}) {
                   <Link
                     to="/movies"
                     className={`header__link_narrow ${ location.pathname === '/movies' ? 'header_active_underline' : '' }`}>
-                    Фильмы
+                    Movies
                   </Link>
                 </li>
                 <li className="header__narrow-movie-item">
                   <Link
                     to="/saved-movies"
                     className={`header__link_narrow ${ location.pathname === '/saved-movies' ? 'header_active_underline' : '' }`}>
-                    Сохраненные фильмы
+                    Saved movies
                   </Link>
                 </li>
               </ul>
@@ -97,7 +97,7 @@ function Header({isLoggedIn}) {
                   to="/profile"
                   className="header__narrow_link_profile">
                   <span className="header__profile-icon"></span>
-                  <span className="header__profile-text">Аккаунт</span>
+                  <span className="header__profile-text">Profile</span>
                 </Link>
               </ul>
             </nav>
@@ -112,14 +112,14 @@ function Header({isLoggedIn}) {
             <Link
               to="/signup"
               className="header__link_signup">
-              Регистрация
+              Sign up
             </Link>
           </li>
           <li className="header__nav_item">
             <Link
               to="/signin"
               className="header__link_login">
-              Войти
+              Sign in
             </Link>
           </li>
         </ul>
