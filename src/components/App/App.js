@@ -253,7 +253,7 @@ function App() {
       if (isShortOn === true) {
         return list.filter((movie) => movie.nameEN.toLowerCase().includes(word.toLowerCase()) && movie.duration < 40);
       } else {
-        return list.filter((movie) => console.log(movie));
+        return list.filter((movie) => console.log(movie.nameEN + movie['nameEN'] + movie.nameRU));
       }
     } else {
       return [];
