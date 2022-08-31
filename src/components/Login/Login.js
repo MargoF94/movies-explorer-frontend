@@ -75,7 +75,7 @@ function Login({ handleLogin }) {
           type="submit"
           className={`login__button ${!isValid ? 'login__button_disabled' : ''}`}
           disabled={!isValid}>
-            Войти
+            Sigh in
         </button>
 
       </form>
