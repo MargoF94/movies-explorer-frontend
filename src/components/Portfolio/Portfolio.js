@@ -6,6 +6,16 @@ function Portfolio() {
     <div className="portfolio">
       <h3 className="portfolio__title">Portfolio</h3>
       <ul className="portfolio__container">
+      <li className="portfolio__link-container">
+          <a
+            className="portfolio__link"
+            href="https://yourlocalmovieexplorer.nomoredomains.xyz/signup"
+            target="_blank"
+            rel="noreferrer">
+            <span className="portfolio__link-description">Movies Database</span>
+            <span className="portfolio__link-icon" />
+          </a>
+        </li>
         <li className="portfolio__link-container">
           <a
             className="portfolio__link"
