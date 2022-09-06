@@ -54,7 +54,7 @@ function MoviesCard({ movie, savedMovies, handleSetLike, handleRemoveLike }) {
     } else if (route === '/saved-movies') {
       return (<img src={unsaved} alt="крестик" />);
     } else {
-      return ('Сохранить');
+      return ('Save');
     }
   }
 
@@ -62,7 +62,7 @@ function MoviesCard({ movie, savedMovies, handleSetLike, handleRemoveLike }) {
     const duration = movie.duration;
     const hours = Math.floor(duration / 60); // часы
     const mins = duration - hours * 60; // оставшиеся минуты
-    return`${hours > 0 ? hours + 'ч ' : ''}${mins > 0 ? mins + 'м' : ''}`;
+    return`${hours > 0 ? hours + 'h ' : ''}${mins > 0 ? mins + 'm' : ''}`;
   }
 
   return (
